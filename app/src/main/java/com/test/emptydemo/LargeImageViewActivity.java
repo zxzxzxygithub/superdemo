@@ -13,6 +13,7 @@ import java.io.InputStream;
 
 public class LargeImageViewActivity extends Activity {
     private ImageView mImageView;
+    private String FILENAME = "tianyan.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,8 @@ public class LargeImageViewActivity extends Activity {
 
         mImageView = (ImageView) findViewById(R.id.id_imageview);
         try {
-            InputStream inputStream = getAssets().open("tianyan.jpg");
+
+            InputStream inputStream = getAssets().open(FILENAME);
 
             //获得图片的宽、高
             BitmapFactory.Options tmpOptions = new BitmapFactory.Options();
