@@ -7,6 +7,13 @@ import android.graphics.Bitmap;
  */
 public class FastBlurUtil {
 
+    public static Bitmap doBlur(Bitmap originBitmap, int scaleRatio, int blurRadius) {
+        return FastBlurUtil.doBlur( Bitmap.createScaledBitmap(originBitmap,
+                originBitmap.getWidth() / scaleRatio,
+                originBitmap.getHeight() / scaleRatio,
+                false), blurRadius, true);
+    }
+
     public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
 
         // Stack Blur v1.0 from

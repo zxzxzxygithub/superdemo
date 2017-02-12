@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ObscuredActivity"
-            android:label="Graphics/毛玻璃"
+            android:label="Graphics/1毛玻璃"
             >
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
