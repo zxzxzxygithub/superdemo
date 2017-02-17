@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    tasks.whenTaskAdded {
+        task ->
+            if (
+            task.name.contains("lint")
+                    || task.name.contains("Aidl")
+                    || task.name.contains("mockableAndroidJar")
+                    || task.name.contains("UnitTest")
+                    || task.name.contains("AndroidTest")
+            ) {
+                task.enabled = false        }
+    }
+
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 25
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:25.1.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+}
