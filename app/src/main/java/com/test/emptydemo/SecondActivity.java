@@ -1,58 +1,71 @@
 package com.test.emptydemo;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
-
-import java.io.File;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 
 
 /**
  * @author zhengyx
- * @description cameratest
+ * @description horizontalverticalconflic
  * @date 2017/2/8
  */
 public class SecondActivity extends AppCompatActivity implements View.OnClickListener{
 
 
-    public static final String FILE_NAME="A_c.txt";
-    public static final String TAG="A_c.txt111";
-    private File mFile;
-    private Camera mCamera;
-    private MediaRecorder mPreview;
+    public static final String TAG="SecondActivity";
+    private ScrollView scrollView;
+    private HorizontalScrollView innersc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
-        TextView textView= (TextView) findViewById(R.id.activity_second);
-        textView.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.horizontalandvertical);
+        scrollView = (ScrollView) findViewById(R.id.outsc);
+        innersc = (HorizontalScrollView) findViewById(R.id.innersc);
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
+                innersc.getParent().requestDisallowInterceptTouchEvent(false);
+                return false;
             }
         });
-        mFile = new File(Environment.getExternalStorageDirectory(),FILE_NAME);
-        String[] persmissions={Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
-        ActivityCompat.requestPermissions(this,persmissions,111);
 
+        innersc.setOnTouchListener(new View.OnTouchListener() {
+            public int lastY;
+            public int lastX;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                innersc.getParent().requestDisallowInterceptTouchEvent(true);
+                int x = (int) event.getRawX();
+                int y = (int) event.getRawY();
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        lastX = x;
+                        lastY = y;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        int deltaY = y - lastY;
+                        int deltaX = x - lastX;
+                        if (Math.abs(deltaX) < Math.abs(deltaY)) {
+                            innersc.getParent().requestDisallowInterceptTouchEvent(false);
+                        } else {
+                            innersc.getParent().requestDisallowInterceptTouchEvent(true);
+                        }
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0]== PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED){
-            System.out.println(1/0);
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -80,28 +93,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         Log.d(TAG, "onDestroy: ");
     }
 
-    private boolean safeCameraOpen(int id) {
-        boolean qOpened = false;
 
-        try {
-            releaseCameraAndPreview();
-            mCamera = Camera.open(id);
-            qOpened = (mCamera != null);
-        } catch (Exception e) {
-            Log.e(getString(R.string.app_name), "failed to open Camera");
-            e.printStackTrace();
-        }
-
-        return qOpened;
-    }
-
-    private void releaseCameraAndPreview() {
-        mPreview.setCamera(null);
-        if (mCamera != null) {
-            mCamera.release();
-            mCamera = null;
-        }
-    }
 
 
     @Override

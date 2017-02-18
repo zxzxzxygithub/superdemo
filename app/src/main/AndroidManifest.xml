@@ -20,7 +20,7 @@
         </activity>
         <!--所有activity必须配置label-->
         <activity android:name=".SecondActivity"
-            android:label="1camera/takepic"
+            android:label="1touch/horizontalverticalconflict"
             android:theme="@style/Base.Theme.AppCompat"
             >
             <!--所有acivity都必须配置这个action和category-->
