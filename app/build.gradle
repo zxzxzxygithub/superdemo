@@ -2,11 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
 
-    tasks.whenTaskAdded {
+   tasks.whenTaskAdded {
         task ->
             if (
             task.name.contains("lint")
-                    || task.name.equals("clean")
                     || task.name.contains("Aidl")
                     || task.name.contains("mockableAndroidJar")
                     || task.name.contains("UnitTest")
@@ -39,4 +38,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:24.1.1'
 }
