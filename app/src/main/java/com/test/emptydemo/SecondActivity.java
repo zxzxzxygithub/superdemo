@@ -42,8 +42,8 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 innersc.getParent().requestDisallowInterceptTouchEvent(true);
-                int x = (int) event.getRawX();
-                int y = (int) event.getRawY();
+                int x = (int) event.getX();
+                int y = (int) event.getY();
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
