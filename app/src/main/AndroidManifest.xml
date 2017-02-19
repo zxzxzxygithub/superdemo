@@ -16,9 +16,42 @@
             </intent-filter>
         </activity>
         <!--所有activity必须配置label-->
-        <activity android:name=".SecondActivity"
-            android:label="1test/test"
-            >
+        <activity
+            android:name=".HeaderFooterActivity"
+            android:label="1XrecyclerView/headerandfooter">
+            <!--所有acivity都必须配置这个action和category-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+        <!--所有activity必须配置label-->
+        <activity
+            android:name=".EmptyRvActivity"
+            android:label="1XrecyclerView/emptyView">
+            <!--所有acivity都必须配置这个action和category-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+        <!--所有activity必须配置label-->
+        <activity
+            android:name=".RefreshRvActivity"
+            android:label="1XrecyclerView/refresh">
+            <!--所有acivity都必须配置这个action和category-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+        <!--所有activity必须配置label-->
+        <activity
+            android:name=".LoadMoreRvActivity"
+            android:label="1XrecyclerView/loadmore">
             <!--所有acivity都必须配置这个action和category-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
