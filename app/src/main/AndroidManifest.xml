@@ -59,6 +59,28 @@
                 <category android:name="android.intent.category.SAMPLE_CODE" />
             </intent-filter>
         </activity>
+        <!--所有activity必须配置label-->
+        <activity
+            android:name=".CommonAdapterActivity"
+            android:label="1XrecyclerView/cusadapter/commonadapter">
+            <!--所有acivity都必须配置这个action和category-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+        <!--所有activity必须配置label-->
+        <activity
+            android:name=".MultiItemAdapterActivity"
+            android:label="1XrecyclerView/cusadapter/MultiItemAdapter">
+            <!--所有acivity都必须配置这个action和category-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
