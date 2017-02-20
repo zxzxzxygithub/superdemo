@@ -51,19 +51,18 @@ public class ViewpagerItemDelagate implements ItemViewDelegate<ChatMessage> {
 
         }
 
-        ArrayList<View> mViewList = new ArrayList<>();
+//        ArrayList<View> mViewList = new ArrayList<>();
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view;
-            if (mViewList.isEmpty()) {
+//            if (mViewList.isEmpty()) {
                 view = LayoutInflater.from(container.getContext()).inflate(R.layout.item, null);
                 TextView textView = (TextView) view.findViewById(R.id.text);
                 textView.setText(contentViews.get(position));
-                view = textView;
-            } else {
-                view = mViewList.remove(0);
-            }
+//            } else {
+//                view = mViewList.remove(0);
+//            }
             container.addView(view);
             return view;
         }
@@ -72,7 +71,6 @@ public class ViewpagerItemDelagate implements ItemViewDelegate<ChatMessage> {
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;
             container.removeView(view);
-            mViewList.add(view);
         }
 
 
@@ -83,7 +81,7 @@ public class ViewpagerItemDelagate implements ItemViewDelegate<ChatMessage> {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return false;
+            return view == object;
         }
     }
 

@@ -12,6 +12,7 @@ public class ChatMessage {
     private String content;
     private String createDate;
     private boolean isComMeg;
+    private int viewType;
 
 
     public final static int RECIEVE_MSG = 0;
@@ -75,6 +76,15 @@ public class ChatMessage {
         this.createDate = createDate;
     }
 
+
+    public int getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
+    }
+
     @Override
     public String toString() {
         return "ChatMessage [icon=" + icon + ", name=" + name + ", content="
@@ -85,89 +95,92 @@ public class ChatMessage {
 
     static {
         ChatMessage msg = null;
+        boolean notComeMsg = false;
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
+
+        MOCK_DATAS.add(msg);
+        msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
+                null, notComeMsg);
         ArrayList<String> list1 = new ArrayList<>();
-        list1.add("123");
-        list1.add("344");
-        list1.add("567");
+        list1.add("item左右滑动1");
+        list1.add("item左右滑动2");
+        list1.add("item左右滑动3");
         msg.setList(list1);
         MOCK_DATAS.add(msg);
+        boolean isComeMsg = true;
+        msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
+                null, isComeMsg);
+        MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
-        MOCK_DATAS.add(msg);
-        msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
-        MOCK_DATAS.add(msg);
-        msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
 
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
-                null, true);
+                null, isComeMsg);
         MOCK_DATAS.add(msg);
         msg = new ChatMessage(R.drawable.xiaohei, "xiaohei", "where are you ",
-                null, false);
+                null, notComeMsg);
         MOCK_DATAS.add(msg);
     }
 
