@@ -13,3 +13,8 @@
 
 3.  如果手机装有apidemo则会列出apidemo中的所有列表
     同理如果你的demo都是遵循这个原则也会把你其他demo的列表都列进来
+
+
+本demo参考：https://github.com/hongyangAndroid/baseAdapter
+
+https://github.com/jianghejie/XRecyclerView
