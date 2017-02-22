@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:textSize="20sp"
-    android:text="mytest"
+    android:text="点我启动service弹出toast"
     tools:context="com.test.emptydemo.SecondActivity">
 
 </TextView>

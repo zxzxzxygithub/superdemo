@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test.emptydemo">
-
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,17 +15,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--所有activity必须配置label-->
-        <activity android:name=".SecondActivity"
-            android:label="1test/test"
-            >
-            <!--所有acivity都必须配置这个action和category-->
+        <!-- 所有activity必须配置label -->
+        <activity
+            android:name=".SecondActivity"
+            android:label="1Service/toast">
+
+            <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.SAMPLE_CODE" />
             </intent-filter>
         </activity>
+        <!-- 所有activity必须配置label -->
+        <activity
+            android:name=".ThirdActivity"
+            android:label="1Service/dialog">
+
+            <!-- 所有acivity都必须配置这个action和category -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true">
+
+        </service>
     </application>
 
 </manifest>
