@@ -17,8 +17,19 @@
         </activity>
         <!--所有activity必须配置label-->
         <activity
-            android:name=".AwsomeHeaderActivity"
+            android:name=".HeaderFooterActivity"
             android:label="1XrecyclerView/headerandfooter">
+            <!--所有acivity都必须配置这个action和category-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+        <!--所有activity必须配置label-->
+        <activity
+            android:name=".AwsomeHeaderActivity"
+            android:label="1XrecyclerView/awsomeheader">
             <!--所有acivity都必须配置这个action和category-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

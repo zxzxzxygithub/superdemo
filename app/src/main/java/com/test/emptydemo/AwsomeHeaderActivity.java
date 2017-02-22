@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 
+import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.StoreHouseHeader;
 
 
 /**
@@ -31,11 +33,15 @@ public class AwsomeHeaderActivity extends Activity {
         }
     }
 
+    private PtrFrameLayout frame;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_awsomeheader);
-        PtrFrameLayout pf = (PtrFrameLayout) findViewById(R.id.store_house_ptr_frame);
+        frame = (PtrFrameLayout) findViewById(R.id.store_house_ptr_frame);
+        initHouseHeader();
+
 
         final XRecyclerView xRecyclerView = (XRecyclerView) findViewById(R.id.home_lv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -50,7 +56,7 @@ public class AwsomeHeaderActivity extends Activity {
         xRecyclerView.setFootView(footerView);
         footerView.setVisibility(View.VISIBLE);
 
-        xRecyclerView.setPullRefreshEnabled(false);
+        xRecyclerView.setPullRefreshEnabled(true);
         xRecyclerView.setLoadingMoreEnabled(true);
 //它的footer必须要设置loadinglistener才可显示出来
         xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -70,6 +76,26 @@ public class AwsomeHeaderActivity extends Activity {
         xRecyclerView.setAdapter(myAdapter);
 
 
+    }
+
+    private void initHouseHeader() {
+        StoreHouseHeader header = new StoreHouseHeader(this);
+        header.setPadding(0, 30, 0, 0);
+        header.initWithString("DEMO");
+        frame.setDurationToCloseHeader(3000);
+        frame.setHeaderView(header);
+        frame.addPtrUIHandler(header);
+
+        frame.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+            }
+        });
     }
 
 
