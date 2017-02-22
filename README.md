@@ -13,3 +13,6 @@
 
 3.  如果手机装有apidemo则会列出apidemo中的所有列表
     同理如果你的demo都是遵循这个原则也会把你其他demo的列表都列进来
+    
+    4. 本示例演示service中显示toast和dialog，其中toast是本身就支持的，但是dialog需要做一些处理，
+    详细请看工程代码
