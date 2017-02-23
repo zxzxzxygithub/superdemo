@@ -2,6 +2,7 @@ package com.test.emptydemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
 /**
  * @author zhengyx
@@ -14,5 +15,6 @@ public class SecondActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        OutScreenHeightView viewById = (OutScreenHeightView) findViewById(R.id.outscreenview);
     }
 }
