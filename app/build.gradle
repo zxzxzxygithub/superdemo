@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def realTime() {
+    return new Date().format("yyyy-MM-dd-HH")
+}
+
 android {
 
     tasks.whenTaskAdded {
@@ -12,10 +16,27 @@ android {
                     || task.name.contains("AndroidTest")
             ) {
                 task.enabled = false
-                task.doLast{
+                task.doLast {
                     println("dolast")
                 }
             }
+    }
+
+    productFlavors {
+        UPDATE_CHANNEL {}
+        YYB_CHANNEL {}
+        BAIDU_CHANNEL {}
+        //WDJ_CHANNEL {}
+        HUAWEI_CHANNEL {}
+        //ANDZHOU_CHANNEL {}
+        XIAOMI_CHANNEL {}
+        //SOUGOU_CHANNEL {}
+        //C360_CHANNEL {}
+        // SILIAO_CHANNEL {}
+
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
     }
 
 
@@ -33,6 +54,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    applicationVariants.all {
+        variant ->
+            variant.outputs.each {
+                output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith(".apk")) {
+                        def fileName = "apidemo_${variant.productFlavors[0].name}_vc${defaultConfig.versionCode}_v${defaultConfig.versionName}_${realTime()}_${variant.buildType.name}"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+            }
     }
 }
 
