@@ -26,7 +26,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         ButterKnife.bind(this);
-        tv.setText("try to click me");
+        tv.setText("proguard 参考assets文件夹");
     }
 
     @OnClick(R.id.tv)
