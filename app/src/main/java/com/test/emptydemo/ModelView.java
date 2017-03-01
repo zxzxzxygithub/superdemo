@@ -49,6 +49,9 @@ public class ModelView extends RelativeLayout {
 
     public void setBigPicDrawableId(int drawableId) {
         mBigPicDrawableId = drawableId;
+        if (mBigPicDrawableId!=-1){
+            mBigPicView.setBackgroundResource(mBigPicDrawableId);
+        }
     }
 
     public void startAni() {
