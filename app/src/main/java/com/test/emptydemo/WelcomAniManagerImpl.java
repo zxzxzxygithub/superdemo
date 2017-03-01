@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 /**
  * Created by zhengyongxiang on 2017/3/1.
@@ -29,7 +30,7 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
     @Override
     public Animator getXScalePicAni(View view) {
         ObjectAnimator xScaleAnimation = ObjectAnimator.ofFloat(view, "scaleX", 1.0f, 1.3f);
-
+        xScaleAnimation.setInterpolator(new LinearInterpolator());
         return xScaleAnimation;
     }
 
@@ -37,6 +38,7 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
     @Override
     public Animator getYScalePicAni(View view) {
         ObjectAnimator yScaleAnimation = ObjectAnimator.ofFloat(view, "scaleY", 1.0f, 1.3f);
+        yScaleAnimation.setInterpolator(new LinearInterpolator());
         return yScaleAnimation;
     }
 
@@ -44,7 +46,7 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
     @Override
     public Animator getXScaleInPicAni(View view) {
         ObjectAnimator xScaleAnimation = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0f);
-
+        xScaleAnimation.setInterpolator(new LinearInterpolator());
         return xScaleAnimation;
     }
 
@@ -52,6 +54,7 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
     @Override
     public Animator getYScaleInPicAni(View view) {
         ObjectAnimator yScaleAnimation = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0f);
+        yScaleAnimation.setInterpolator(new LinearInterpolator());
         return yScaleAnimation;
     }
 
@@ -59,6 +62,7 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
     @Override
     public Animator getIconBottomRaiseCenterAni(View view) {
         ObjectAnimator translationY = ObjectAnimator.ofFloat(view, "translationY", 0, -heightPixels);
+        translationY.setInterpolator(new LinearInterpolator());
         return translationY;
     }
 
