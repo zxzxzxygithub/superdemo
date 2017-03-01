@@ -11,6 +11,7 @@ public class WelcomShowModelPageActivity extends Activity {
 
     private ImageView mCenterIcon;
     private View mRlbg;
+    private ImageView mCircle;
 
 
     /**
@@ -24,13 +25,14 @@ public class WelcomShowModelPageActivity extends Activity {
         mShowPicture = findViewById(R.id.bg);
         mRlbg = findViewById(R.id.rlbg);
         mCenterIcon = (ImageView) findViewById(R.id.centericon);
+        mCircle = (ImageView) findViewById(R.id.circle);
         init();
     }
 
     private void init() {
         initPicture();
         WelcomeAniManager welcomAniManager = new WelcomAniManagerImpl(this);
-        welcomAniManager.showWelcomAni(mShowPicture, mCenterIcon, mRlbg);
+        welcomAniManager.showWelcomAni(mShowPicture, mCenterIcon, mRlbg,mCircle);
     }
 
 

@@ -19,5 +19,7 @@ public interface WelcomeAniManager {
 
     Animator getIconBottomRaiseCenterAni(View view);
 
-    void showWelcomAni(View scaleBig, View up, View zoomIn);
+    Animator getCircleRevealAni(View view);
+
+    void showWelcomAni(View scaleBig, View up, View zoomIn, View mCircle);
 }

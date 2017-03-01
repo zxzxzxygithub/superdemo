@@ -1,8 +1,8 @@
 package com.test.emptydemo;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +20,8 @@ public class SecondActivity extends Activity implements View.OnClickListener {
 
     @BindView(R.id.tv)
     TextView tv;
+    @BindView(R.id.modelview)
+    ModelView modelview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,12 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_second);
         ButterKnife.bind(this);
         tv.setText("try to click me");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                modelview.startAni();
+            }
+        },1000);
     }
 
     @OnClick(R.id.tv)

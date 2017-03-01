@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.animation.LinearInterpolator;
 
 /**
@@ -66,19 +67,38 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
         return translationY;
     }
 
+    @Override
+    public Animator getCircleRevealAni(View v) {
+        // 获取FloatingActionButton的中心点的坐标
+        int centerX = (v.getLeft() + v.getRight()) / 2;
+        int centerY = (v.getTop() + v.getBottom()) / 2;
+        // Math.hypot(x,y):  返回sqrt(x2 +y2)
+        // 获取扩散的半径
+        float finalRadius = (float) Math.hypot((double) centerX, (double) centerY);
+        // 定义揭露动画
+        Animator mCircularReveal = ViewAnimationUtils.createCircularReveal(
+                v, centerX, centerY, 0, finalRadius);
+        // 设置动画持续时间，并开始动画
+        mCircularReveal.setDuration(4000).start();
+        return null;
+    }
+
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
-    public void showWelcomAni(View scaleBig, View centerIconView, View zoomIn) {
+    public void showWelcomAni(View scaleBig, View centerIconView, final View zoomIn, View mCircle) {
         Animator xScalePicAni = getXScalePicAni(scaleBig);
         Animator yScalePicAni = getYScalePicAni(scaleBig);
         Animator iconBottomRaiseCenterAni = getIconBottomRaiseCenterAni(centerIconView);
         Animator xScaleInPicAni = getXScaleInPicAni(zoomIn);
         Animator yScaleInPicAni = getYScaleInPicAni(zoomIn);
+//        Animator circleRevealAni = getCircleRevealAni(mCircle);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(2000);
+
         animatorSet.play(xScalePicAni).with(yScalePicAni);
         animatorSet.play(iconBottomRaiseCenterAni).after(xScalePicAni);
+//        animatorSet.play(circleRevealAni).after(iconBottomRaiseCenterAni);
         animatorSet.play(xScaleInPicAni).after(iconBottomRaiseCenterAni);
         animatorSet.play(xScaleInPicAni).with(yScaleInPicAni);
         animatorSet.addListener(new Animator.AnimatorListener() {
@@ -89,8 +109,7 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                ((Activity) context).finish();
-
+                 zoomIn.setVisibility(View.GONE);
             }
 
             @Override
