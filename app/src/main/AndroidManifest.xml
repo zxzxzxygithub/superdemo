@@ -16,8 +16,22 @@
             </intent-filter>
         </activity>
         <!--所有activity必须配置label-->
-        <activity android:name=".SecondActivity"
+        <activity
+            android:name=".SecondActivity"
             android:label="1test/test"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <!--所有acivity都必须配置这个action和category-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+        <!--所有activity必须配置label-->
+        <activity
+            android:name=".WelcomShowModelPageActivity"
+            android:label="1animation/welcomeani"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             >
             <!--所有acivity都必须配置这个action和category-->
             <intent-filter>
