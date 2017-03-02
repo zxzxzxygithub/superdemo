@@ -20,6 +20,7 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
 
     private final Context context;
     private int heightPixels;
+    private Animator.AnimatorListener mListener;
 
     public WelcomAniManagerImpl(Context context) {
         heightPixels = context.getResources().getDisplayMetrics().heightPixels / 2;
@@ -101,27 +102,38 @@ public class WelcomAniManagerImpl implements WelcomeAniManager {
 //        animatorSet.play(circleRevealAni).after(iconBottomRaiseCenterAni);
         animatorSet.play(xScaleInPicAni).after(iconBottomRaiseCenterAni);
         animatorSet.play(xScaleInPicAni).with(yScaleInPicAni);
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+        if (mListener == null) {
+            Animator.AnimatorListener listener = new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                 zoomIn.setVisibility(View.GONE);
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    zoomIn.setVisibility(View.GONE);
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+                @Override
+                public void onAnimationCancel(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+                @Override
+                public void onAnimationRepeat(Animator animation) {
 
-            }
-        });
+                }
+            };
+            animatorSet.addListener(listener);
+        } else {
+            animatorSet.addListener(mListener);
+        }
+
         animatorSet.start();
+    }
+
+    @Override
+    public void setListener(Animator.AnimatorListener listener) {
+        this.mListener = listener;
     }
 }

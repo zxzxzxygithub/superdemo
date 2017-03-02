@@ -22,4 +22,6 @@ public interface WelcomeAniManager {
     Animator getCircleRevealAni(View view);
 
     void showWelcomAni(View scaleBig, View up, View zoomIn, View mCircle);
+
+    void setListener(Animator.AnimatorListener listener);
 }

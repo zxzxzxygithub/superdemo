@@ -1,9 +1,11 @@
 package com.test.emptydemo;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +34,32 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                WelcomeAniManager welcomAniManager = new WelcomAniManagerImpl(SecondActivity.this);
+                welcomAniManager.setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        clearFullScreenFlag();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+                modelview.setWelcomManager(welcomAniManager);
                 modelview.startAni();
             }
-        },1000);
+        }, 1000);
     }
 
     @OnClick(R.id.tv)
@@ -49,5 +74,13 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         }
 
 
+    }
+
+    public void clearFullScreenFlag() {
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        attrs.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setAttributes(attrs);
+//取消全屏设置
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 }

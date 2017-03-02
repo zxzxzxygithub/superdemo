@@ -5,4 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Anim_fade" parent="android:Theme.Light.NoTitleBar">
+        <item name="android:windowAnimationStyle">@style/fade</item>
+    </style>
+    <style name="fade" parent="@android:style/Animation.Activity">
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/scaleout</item>
+    </style>
+
 </resources>

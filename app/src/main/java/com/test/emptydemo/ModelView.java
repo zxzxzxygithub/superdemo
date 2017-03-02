@@ -20,6 +20,7 @@ public class ModelView extends RelativeLayout {
     private View mCenterIcon;
     private View mCircle;
     private View mBigPicView;
+    private WelcomeAniManager mWelComManager;
 
     public ModelView(Context context) {
         super(context);
@@ -40,7 +41,7 @@ public class ModelView extends RelativeLayout {
         if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.welcomeattr);
             int resourceId = typedArray.getResourceId(0, -1);
-            if (resourceId!=-1){
+            if (resourceId != -1) {
                 mBigPicView.setBackgroundResource(resourceId);
             }
         }
@@ -49,13 +50,20 @@ public class ModelView extends RelativeLayout {
 
     public void setBigPicDrawableId(int drawableId) {
         mBigPicDrawableId = drawableId;
-        if (mBigPicDrawableId!=-1){
+        if (mBigPicDrawableId != -1) {
             mBigPicView.setBackgroundResource(mBigPicDrawableId);
         }
     }
 
+    public void setWelcomManager(WelcomeAniManager welcomAniManager) {
+        this.mWelComManager = welcomAniManager;
+
+    }
+
     public void startAni() {
-        WelcomeAniManager welcomAniManager = new WelcomAniManagerImpl(getContext());
-        welcomAniManager.showWelcomAni(mBigPicView, mCenterIcon, mContainerView, mCircle);
+        if (mWelComManager == null) {
+            mWelComManager = new WelcomAniManagerImpl(getContext());
+        }
+        mWelComManager.showWelcomAni(mBigPicView, mCenterIcon, mContainerView, mCircle);
     }
 }
