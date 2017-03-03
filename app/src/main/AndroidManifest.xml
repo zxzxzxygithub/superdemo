@@ -14,16 +14,40 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="siliao.com"
+                    android:pathPrefix="/app/"
+                    android:scheme="http">
+
+                </data>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
         <!--所有activity必须配置label-->
-        <activity android:name=".SecondActivity"
-            android:label="1test/test"
-            >
+        <activity
+            android:name=".SecondActivity"
+            android:label="1test/test">
             <!--所有acivity都必须配置这个action和category-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="siliao.com"
+                    android:pathPrefix="/detail"
+                    android:scheme="http">
+
+                </data>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
     </application>

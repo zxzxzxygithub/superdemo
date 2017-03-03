@@ -34,6 +34,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //    It means Android studio DO NOT check PNG strictly.
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
 }
 
 dependencies {
