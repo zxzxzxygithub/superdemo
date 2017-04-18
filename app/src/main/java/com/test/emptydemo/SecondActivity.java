@@ -3,6 +3,7 @@ package com.test.emptydemo;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,9 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.tv:
-                Toast.makeText(this, "hello world", Toast.LENGTH_SHORT).show();
+                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+                String deviceId = telephonyManager.getDeviceId();
+                Toast.makeText(this, "deviceiD_" + deviceId, Toast.LENGTH_SHORT).show();
                 break;
         }
 
