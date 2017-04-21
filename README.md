@@ -46,3 +46,8 @@ dependencies {
 ```
 
 动态菜单修改，参考 http://blog.csdn.net/pengruikeji/article/details/6432807
+
+[Fragment中onOptionsItemSelected方法不起作用的解决方法](http://blog.csdn.net/ican87/article/details/38012563)
+
+为微信添加菜单：oncreate方法中调用com.test.emptydemo.Utils.showDotMenu，使能够显示出more菜单，然后在
+onPrepareOptionsMenu方法中添加menu，在onMenuItemSelected方法中调用点击事件

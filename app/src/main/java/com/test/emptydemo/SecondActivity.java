@@ -3,6 +3,7 @@ package com.test.emptydemo;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +24,7 @@ import butterknife.OnClick;
  * @date 2017/2/8
  */
 public class SecondActivity extends Activity implements View.OnClickListener {
-
+    Fragment fragment;
     @BindView(R.id.tv)
     TextView tv;
 
@@ -59,6 +60,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int order = 1;
         String title = "this is an addmenu";
         menu.add(groupId, itemId, order, title);
+        menu.add("menu 2");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -81,6 +83,15 @@ public class SecondActivity extends Activity implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        Toast.makeText(this, "clickitem_" + item.getItemId(), Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+
+        Toast.makeText(this, "onMenuItemSelected_" + item.getItemId(), Toast.LENGTH_SHORT).show();
+
+        return super.onMenuItemSelected(featureId, item);
     }
 }
