@@ -34,7 +34,7 @@
             android:value="true" />˛
         <meta-data
             android:name="xposeddescription"
-            android:value="hook imei" />
+            android:value="hook menu" />
         <meta-data
             android:name="xposedminversion"
             android:value="30" />

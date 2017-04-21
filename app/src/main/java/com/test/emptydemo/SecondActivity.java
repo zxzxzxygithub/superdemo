@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Method;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +33,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_second);
         ButterKnife.bind(this);
         tv.setText("try to click me");
+        Utils.showDotMenu(this);
     }
 
     @OnClick(R.id.tv)
@@ -44,5 +50,37 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         }
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        int groupId = 1;
+        int itemId = 1;
+        int order = 1;
+        String title = "this is an addmenu";
+        menu.add(groupId, itemId, order, title);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (featureId == Window.FEATURE_ACTION_BAR && menu != null) {
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }
