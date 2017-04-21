@@ -44,3 +44,5 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
 ```
+
+动态菜单修改，参考 http://blog.csdn.net/pengruikeji/article/details/6432807
