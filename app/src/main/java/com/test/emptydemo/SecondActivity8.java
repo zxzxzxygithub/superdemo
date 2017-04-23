@@ -1,11 +1,9 @@
 package com.test.emptydemo;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +22,7 @@ import butterknife.OnClick;
  * @description 注册lable为1test/test
  * @date 2017/2/8
  */
-public class SecondActivity extends Activity implements View.OnClickListener {
+public class SecondActivity8 extends Activity implements View.OnClickListener {
     Fragment fragment;
     @BindView(R.id.tv)
     TextView tv;
@@ -38,10 +34,6 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         ButterKnife.bind(this);
         tv.setText("try to click me");
         Utils.showDotMenu(this);
-//        android.app.AlertDialog
-
-
-
     }
 
     @OnClick(R.id.tv)

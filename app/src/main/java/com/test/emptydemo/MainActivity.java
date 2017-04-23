@@ -23,6 +23,8 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -63,6 +65,28 @@ public class MainActivity extends ListActivity {
                 android.R.layout.simple_list_item_1, new String[]{KEY_TITLE},
                 new int[]{android.R.id.text1}));
         getListView().setTextFilterEnabled(true);
+
+//
+        ListView listView = getListView();
+        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+            }
+        };
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
     }
 
     protected List<Map<String, Object>> getData(String prefix) {
