@@ -51,3 +51,7 @@ dependencies {
 
 为微信添加菜单：oncreate方法中调用com.test.emptydemo.Utils.showDotMenu，使能够显示出more菜单，然后在
 onPrepareOptionsMenu方法中添加menu，在onMenuItemSelected方法中调用点击事件
+
+
+获取通讯录的思路：1.找到通讯录fragemnt类   2。找到listview   3.遍历listview的所有item
+4.把item的所有字段值读出来
