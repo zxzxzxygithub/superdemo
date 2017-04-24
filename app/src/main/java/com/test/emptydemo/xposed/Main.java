@@ -24,8 +24,10 @@ public class Main implements IXposedHookLoadPackage {
     private static final int GROUP_ID = 11;//hooked menugroupid
     private static final int ITERM_ID = 11;//hooked menugroupid
     private static final String NEWLINE = "\n";
-    public static  final String CMD_RUN = "1";
-    public static  final  String CMD_STOP = "2";
+    public static final String CMD_RUN = "1";//运行脚本
+    public static final String CMD_STOP = "2";//停止脚本
+    public static final String CMD_SNAPSHOT = "3";//截图
+    public static final String PICPATHSTR = "/mnt/sdcard/Download/";
 
     // idem
     private void hook_method(String className, ClassLoader classLoader, String methodName,
@@ -42,35 +44,7 @@ public class Main implements IXposedHookLoadPackage {
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
         handleLoadPackage4release(loadPackageParam);
 
-//        final String packageName = "com.test.emptydemo";
-//        String filePath = String.format("/data/app/%s-%d/base.apk", packageName, 1);
-//        if (!new File(filePath).exists()) {
-//            filePath = String.format("/data/app/%s-%d/base.apk", packageName, 2);
-//            if (!new File(filePath).exists()) {
-//                XposedBridge.log("Error:在/data/app找不到APK文件" + packageName);
-//                return;
-//            }
-//        }
-//        try {
-//            final PathClassLoader pathClassLoader = new PathClassLoader(filePath, ClassLoader.getSystemClassLoader());
-//            final Class<?> aClass = Class.forName("com.test.emptydemo.xposed.Main", true, pathClassLoader);
-//            final Method aClassMethod = aClass.getMethod("handleLoadPackage4release", XC_LoadPackage.LoadPackageParam.class);
-//            aClassMethod.invoke(aClass.newInstance(), loadPackageParam);
-//        } catch (ClassNotFoundException e) {
-//            XposedBridge.log(e);
-//        } catch (NoSuchMethodException e) {
-//            XposedBridge.log(e);
-//        } catch (SecurityException e) {
-//            XposedBridge.log(e);
-//        } catch (IllegalAccessException e) {
-//            XposedBridge.log(e);
-//        } catch (IllegalArgumentException e) {
-//            XposedBridge.log(e);
-//        } catch (InvocationTargetException e) {
-//            XposedBridge.log(e);
-//        } catch (InstantiationException e) {
-//            XposedBridge.log(e);
-//        }
+
     }
 
     public void handleLoadPackage4release(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
@@ -81,8 +55,6 @@ public class Main implements IXposedHookLoadPackage {
         try {
 //        尝试hook 触摸精灵 start
             tryTohookTouchSpiriteService(loadPackageParam);
-//            tryTohookTouchSpiriteDoPlay(loadPackageParam);
-            tryTohookTouchSpiriteDoStop(loadPackageParam);
 //        尝试hook 触摸精灵  end
             XposedBridge.log("------------5");
         } catch (Exception e) {
@@ -90,12 +62,49 @@ public class Main implements IXposedHookLoadPackage {
         }
     }
 
+    private void tryTohookTouchSpiriteSnapShot(XC_LoadPackage.LoadPackageParam loadPackageParam) {
+
+
+        String className = "net.aisence.Touchelper.TouchelperBin";
+        ClassLoader classLoader = loadPackageParam.classLoader;
+        String methodStr = "doSnapshot";
+        XposedHelpers.findAndHookMethod(className, classLoader, methodStr,
+                Object.class, String.class, String.class, boolean.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+                        super.afterHookedMethod(methodHookParam);
+                    }
+
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+                        super.beforeHookedMethod(methodHookParam);
+//                        04-24 20:10:06.927 I/Xposed  ( 8808): doSnapshot-
+//                                04-24 20:10:06.927 I/Xposed  ( 8808): arg-net.aisence.Touchelper.TouchelperService@29b5ac43
+//                        04-24 20:10:06.927 I/Xposed  ( 8808): arg2-/mnt/sdcard/Download/1493035806927.bmp
+//                        04-24 20:10:06.927 I/Xposed  ( 8808): arg3-flinger
+//                        04-24 20:10:06.927 I/Xposed  ( 8808): arg4-true
+
+                        XposedBridge.log("doSnapshot-");
+                        Object arg = methodHookParam.args[0];
+                        Object arg2 = methodHookParam.args[1];
+                        Object arg3 = methodHookParam.args[2];
+                        Object arg4 = methodHookParam.args[3];
+                        XposedBridge.log("arg-" + arg);
+                        XposedBridge.log("arg2-" + arg2);
+                        XposedBridge.log("arg3-" + arg3);
+                        XposedBridge.log("arg4-" + arg4);
+                    }
+                });
+
+
+    }
+
     private void tryTohookTouchSpiriteDoStop(XC_LoadPackage.LoadPackageParam loadPackageParam) {
 
         String className = "net.aisence.Touchelper.TouchelperBin";
         ClassLoader classLoader = loadPackageParam.classLoader;
         String methodStr = "doStop";
-        XposedHelpers.findAndHookMethod(className, classLoader, methodStr, Object.class,  new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(className, classLoader, methodStr, Object.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 super.afterHookedMethod(methodHookParam);
@@ -195,7 +204,7 @@ public class Main implements IXposedHookLoadPackage {
 
     private void hookServiceIntentBundle(Intent intent) {
         Bundle intentBundle = intent.getExtras();
-        if (intentBundle==null)return;
+        if (intentBundle == null) return;
         Set<String> keySet = intentBundle.keySet();
         int count = 0;
         StringBuilder stringBuilder = new StringBuilder();
@@ -269,6 +278,15 @@ public class Main implements IXposedHookLoadPackage {
                 );
 
                 XposedBridge.log(" run script " + cmd_doStop +
+                        "reflect result:" + invoke);
+            } else if (CMD_SNAPSHOT.equals(cmd)) {
+                String cmd_doSnapShot = "doSnapshot";
+                Method method = threadClazz.getMethod(cmd_doSnapShot,
+                        Object.class, String.class, String.class, boolean.class);
+                Object invoke = method.invoke(null, thisObject, PICPATHSTR + System.currentTimeMillis() + ".jpg", "flinger", true
+                );
+
+                XposedBridge.log(" run script " + cmd_doSnapShot +
                         "reflect result:" + invoke);
             }
 

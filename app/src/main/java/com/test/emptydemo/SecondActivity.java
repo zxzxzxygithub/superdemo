@@ -3,6 +3,8 @@ package com.test.emptydemo;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
@@ -14,6 +16,9 @@ import android.widget.Toast;
 
 import com.test.emptydemo.xposed.Main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 
 import butterknife.BindView;
@@ -83,7 +88,9 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         String title = "run script";
         menu.add(groupId, itemId, order, title);
         title = "stop script";
-        menu.add(groupId, itemId + 1, order + 1, title);
+        menu.add(groupId, ++itemId, ++order, title);
+        title = "dosnapshot";
+        menu.add(groupId, ++itemId, ++order, title);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -119,14 +126,29 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         serviceIntent.putExtra("intent_UI", "");
         switch (itemId) {
             case 1:
-                serviceIntent.putExtra("cmd", Main.CMD_RUN);//1 run  2 stop
+                serviceIntent.putExtra("cmd", Main.CMD_RUN);
                 break;
 
             case 2:
-                serviceIntent.putExtra("cmd", Main.CMD_STOP);//1 run  2 stop
+                serviceIntent.putExtra("cmd", Main.CMD_STOP);
+                break;
+            case 3:
+                View decorView = getWindow().getDecorView();
+                decorView.setDrawingCacheEnabled(true);//设置能否缓存图片信息（drawing cache）
+                decorView.buildDrawingCache();//如果能够缓存图片，则创建图片缓存
+                Bitmap bitmap = decorView.getDrawingCache();//如果图片已经缓存，返回一个bitmap
+                try {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, new FileOutputStream(new File(Main.PICPATHSTR + "screenshot" + System.currentTimeMillis() +
+                            ".jpg")));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                decorView.destroyDrawingCache();//释放缓存占用的资源</code>
                 break;
         }
-        startService(serviceIntent);
+        if (itemId != 3) {
+            startService(serviceIntent);
+        }
 
         return super.onMenuItemSelected(featureId, item);
     }
