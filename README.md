@@ -53,5 +53,6 @@ dependencies {
 onPrepareOptionsMenu方法中添加menu，在onMenuItemSelected方法中调用点击事件
 
 
-获取通讯录的思路：1.找到通讯录fragemnt类   2。找到listview   3.遍历listview的所有item
-4.把item的所有字段值读出来
+在外部调用触摸精灵执行脚本的思路：1.hook它的service，找到传入service的参数，打印出参数，了解参数的含义
+2.从反编译出来的源码找到执行脚本的方法   ，hook这个方法，打印参数，了解参数的含义
+3.hook 它的service，在service里面用反射调用它的执行脚本方法
