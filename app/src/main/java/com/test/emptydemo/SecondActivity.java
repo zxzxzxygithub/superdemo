@@ -1,11 +1,16 @@
 package com.test.emptydemo;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +46,6 @@ public class SecondActivity extends Activity implements View.OnClickListener {
 //        android.app.AlertDialog
 
 
-
     }
 
     @OnClick(R.id.tv)
@@ -51,9 +55,35 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.tv:
-                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-                String deviceId = telephonyManager.getDeviceId();
-                Toast.makeText(this, "deviceiD_" + deviceId, Toast.LENGTH_SHORT).show();
+//                Bundle EXTRA: Bundle EXTRA 1:Bundle Class: java.lang.Long
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Key: intent_timer
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Value: 0
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle EXTRA 2:Bundle Class: java.lang.String
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Key: intent_file
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Value: /mnt/sdcard/touchelf/scripts/yyy.lua
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle EXTRA 3:Bundle Class: java.lang.Integer
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Key: intent_mode
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Value: 2
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle EXTRA 4:Bundle Class: java.lang.Integer
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Key: intent_play
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Value: 1
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle EXTRA 5:Bundle Class: java.lang.String
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Key: intent_DEBUGGER
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Value:
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle EXTRA 6:Bundle Class: java.lang.String
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Key: intent_UI
+//                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Value:
+                Intent serviceIntent = new Intent();
+                serviceIntent.setComponent(new ComponentName("net.aisence.Touchelper", "net.aisence.Touchelper.TouchelperService"));
+//                serviceIntent.putExtra("intent_timer",0);//默认为0
+                serviceIntent.putExtra("intent_timer", 0);
+                serviceIntent.putExtra("intent_file", "/mnt/sdcard/touchelf/scripts/yyy.lua");
+                serviceIntent.putExtra("intent_mode", 2);
+                serviceIntent.putExtra("intent_play", 1);
+                serviceIntent.putExtra("intent_DEBUGGER", "");
+                serviceIntent.putExtra("intent_UI", "");
+                startService(serviceIntent);
+
                 break;
         }
 
