@@ -2,15 +2,9 @@ package com.test.emptydemo;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +12,9 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.test.emptydemo.xposed.Main;
+
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,16 +67,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
 //                04-24 15:19:30.554 I/Xposed  (13873):  Bundle EXTRA 6:Bundle Class: java.lang.String
 //                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Key: intent_UI
 //                04-24 15:19:30.554 I/Xposed  (13873):  Bundle Value:
-                Intent serviceIntent = new Intent();
-                serviceIntent.setComponent(new ComponentName("net.aisence.Touchelper", "net.aisence.Touchelper.TouchelperService"));
-//                serviceIntent.putExtra("intent_timer",0);//默认为0
-                serviceIntent.putExtra("intent_timer", 0);
-                serviceIntent.putExtra("intent_file", "/mnt/sdcard/touchelf/scripts/yyy.lua");
-                serviceIntent.putExtra("intent_mode", 2);
-                serviceIntent.putExtra("intent_play", 1);
-                serviceIntent.putExtra("intent_DEBUGGER", "");
-                serviceIntent.putExtra("intent_UI", "");
-                startService(serviceIntent);
+
 
                 break;
         }
@@ -95,9 +80,10 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int groupId = 1;
         int itemId = 1;
         int order = 1;
-        String title = "this is an addmenu";
+        String title = "run script";
         menu.add(groupId, itemId, order, title);
-        menu.add("menu 2");
+        title = "stop script";
+        menu.add(groupId, itemId + 1, order + 1, title);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -119,15 +105,28 @@ public class SecondActivity extends Activity implements View.OnClickListener {
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this, "clickitem_" + item.getItemId(), Toast.LENGTH_SHORT).show();
-        return false;
-    }
-
-    @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
 
-        Toast.makeText(this, "onMenuItemSelected_" + item.getItemId(), Toast.LENGTH_SHORT).show();
+        int itemId = item.getItemId();
+        Intent serviceIntent = new Intent();
+        serviceIntent.setComponent(new ComponentName("net.aisence.Touchelper", "net.aisence.Touchelper.TouchelperService"));
+//                serviceIntent.putExtra("intent_timer",0);//默认为0
+        serviceIntent.putExtra("intent_timer", 0);
+        serviceIntent.putExtra("intent_file", "/mnt/sdcard/touchelf/scripts/yyy.lua");
+        serviceIntent.putExtra("intent_mode", 2);
+        serviceIntent.putExtra("intent_play", 1);
+        serviceIntent.putExtra("intent_DEBUGGER", "");
+        serviceIntent.putExtra("intent_UI", "");
+        switch (itemId) {
+            case 1:
+                serviceIntent.putExtra("cmd", Main.CMD_RUN);//1 run  2 stop
+                break;
+
+            case 2:
+                serviceIntent.putExtra("cmd", Main.CMD_STOP);//1 run  2 stop
+                break;
+        }
+        startService(serviceIntent);
 
         return super.onMenuItemSelected(featureId, item);
     }

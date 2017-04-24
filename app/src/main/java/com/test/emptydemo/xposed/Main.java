@@ -2,14 +2,13 @@ package com.test.emptydemo.xposed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
 
-import dalvik.system.PathClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -25,6 +24,8 @@ public class Main implements IXposedHookLoadPackage {
     private static final int GROUP_ID = 11;//hooked menugroupid
     private static final int ITERM_ID = 11;//hooked menugroupid
     private static final String NEWLINE = "\n";
+    public static  final String CMD_RUN = "1";
+    public static  final  String CMD_STOP = "2";
 
     // idem
     private void hook_method(String className, ClassLoader classLoader, String methodName,
@@ -81,11 +82,39 @@ public class Main implements IXposedHookLoadPackage {
 //        尝试hook 触摸精灵 start
             tryTohookTouchSpiriteService(loadPackageParam);
 //            tryTohookTouchSpiriteDoPlay(loadPackageParam);
-//        尝试hook 触摸精灵  end、
+            tryTohookTouchSpiriteDoStop(loadPackageParam);
+//        尝试hook 触摸精灵  end
             XposedBridge.log("------------5");
         } catch (Exception e) {
             XposedBridge.log(e);
         }
+    }
+
+    private void tryTohookTouchSpiriteDoStop(XC_LoadPackage.LoadPackageParam loadPackageParam) {
+
+        String className = "net.aisence.Touchelper.TouchelperBin";
+        ClassLoader classLoader = loadPackageParam.classLoader;
+        String methodStr = "doStop";
+        XposedHelpers.findAndHookMethod(className, classLoader, methodStr, Object.class,  new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+                super.afterHookedMethod(methodHookParam);
+            }
+
+            @Override
+            protected void beforeHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+                super.beforeHookedMethod(methodHookParam);
+//                Object paramObject,  String paramString1, String paramString2,
+//                 long paramLong,     String paramString3, String paramString4,
+//                String paramString5, String paramString6, boolean paramBoolean
+
+                XposedBridge.log("doStop-");
+                Object arg = methodHookParam.args[0];
+                XposedBridge.log("arg-" + arg);
+            }
+        });
+
+
     }
 
     private void tryTohookTouchSpiriteDoPlay(XC_LoadPackage.LoadPackageParam loadPackageParam) {
@@ -150,47 +179,57 @@ public class Main implements IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 super.beforeHookedMethod(methodHookParam);
                 XposedBridge.log("hacked in touchSpirit  service onstartcommand");
-                runScript(methodHookParam.thisObject, classLoader);
-//                Intent intent = (Intent) methodHookParam.args[0];
-//                Bundle intentBundle = intent.getExtras();
-//                Set<String> keySet = intentBundle.keySet();
-//                int count = 0;
-//                StringBuilder stringBuilder = new StringBuilder();
-//                for (String key : keySet) {
-//                    count++;
-//                    Object thisObject = intentBundle.get(key);
-//                    stringBuilder.append(" Bundle EXTRA ").append(count)
-//                            .append(":");
-//                    String thisClass = thisObject.getClass().getName();
-//                    if (thisClass != null) {
-//                        stringBuilder.append("Bundle Class: ").append(thisClass)
-//                                .append(NEWLINE);
-//                    }
-//                    stringBuilder.append(" Bundle Key: ").append(key).append(NEWLINE);
-//
-//                    if (thisObject instanceof String || thisObject instanceof Long
-//                            || thisObject instanceof Integer
-//                            || thisObject instanceof Boolean) {
-//                        stringBuilder.append(" Bundle Value: " + thisObject.toString())
-//                                .append(NEWLINE);
-//                    } else if (thisObject instanceof ArrayList) {
-//                        stringBuilder.append(" Bundle Values:");
-//                        ArrayList thisArrayList = (ArrayList) thisObject;
-//                        for (Object thisArrayListObject : thisArrayList) {
-//                            stringBuilder.append(thisArrayListObject.toString()
-//                                    + NEWLINE);
-//                        }
-//                    }
-//                }
-//                XposedBridge.log("  spirit script Bundle EXTRA:" + stringBuilder);
+                Intent intent = (Intent) methodHookParam.args[0];
+                if (intent == null) {
+                    return;
+                }
+                String intent_file = intent.getStringExtra("intent_file");
+                String cmd = intent.getStringExtra("cmd");
+                runScript(methodHookParam.thisObject, classLoader, intent_file, cmd);
+//                hookServiceIntentBundle(intent);
             }
         });
 
 
     }
 
+    private void hookServiceIntentBundle(Intent intent) {
+        Bundle intentBundle = intent.getExtras();
+        if (intentBundle==null)return;
+        Set<String> keySet = intentBundle.keySet();
+        int count = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String key : keySet) {
+            count++;
+            Object thisObject = intentBundle.get(key);
+            stringBuilder.append(" Bundle EXTRA ").append(count)
+                    .append(":");
+            String thisClass = thisObject.getClass().getName();
+            if (thisClass != null) {
+                stringBuilder.append("Bundle Class: ").append(thisClass)
+                        .append(NEWLINE);
+            }
+            stringBuilder.append(" Bundle Key: ").append(key).append(NEWLINE);
 
-    public void runScript(Object thisObject, ClassLoader classLoader) {
+            if (thisObject instanceof String || thisObject instanceof Long
+                    || thisObject instanceof Integer
+                    || thisObject instanceof Boolean) {
+                stringBuilder.append(" Bundle Value: " + thisObject.toString())
+                        .append(NEWLINE);
+            } else if (thisObject instanceof ArrayList) {
+                stringBuilder.append(" Bundle Values:");
+                ArrayList thisArrayList = (ArrayList) thisObject;
+                for (Object thisArrayListObject : thisArrayList) {
+                    stringBuilder.append(thisArrayListObject.toString()
+                            + NEWLINE);
+                }
+            }
+        }
+        XposedBridge.log("  spirit script Bundle EXTRA:" + stringBuilder);
+    }
+
+
+    public void runScript(Object thisObject, ClassLoader classLoader, String intent_File, String cmd) {
 
         try {
             Class<?> threadClazz = classLoader.loadClass("net.aisence.Touchelper.TouchelperBin");
@@ -207,20 +246,34 @@ public class Main implements IXposedHookLoadPackage {
 //            04-24 16:33:30.208 I/Xposed  ( 9130): arg7-com.sohu.inputmethod.sogou/.SogouIME
 //            04-24 16:33:30.208 I/Xposed  ( 9130): arg8-flinger
 //            04-24 16:33:30.208 I/Xposed  ( 9130): arg9-true
+            if (TextUtils.isEmpty(cmd)) {
+                cmd = CMD_RUN;
+            }
+            if (CMD_RUN.equals(cmd)) {
+                String cmd_doPlay = "doPlay";
+                Method method = threadClazz.getMethod(cmd_doPlay,
+                        Object.class, String.class, String.class,
+                        long.class, String.class, String.class,
+                        String.class, String.class, boolean.class);
+                Object invoke = method.invoke(null, thisObject, "volume+", intent_File,
+                        1, "", "",
+                        "com.sohu.inputmethod.sogou/.SogouIME", "flinger", true
+                );
 
-            Method method = threadClazz.getMethod("doPlay",
-                    Object.class, String.class, String.class,
-                    long.class, String.class, String.class,
-                    String.class, String.class, boolean.class);
-            Object invoke = method.invoke(null, thisObject, "volume+", "/mnt/sdcard/touchelf/scripts/wxcircle.lua",
-                    1, "", "",
-                    "com.sohu.inputmethod.sogou/.SogouIME", "flinger", true
-            );
+                XposedBridge.log(" run script doPlay result:" + invoke);
+            } else if (CMD_STOP.equals(cmd)) {
+                String cmd_doStop = "doStop";
+                Method method = threadClazz.getMethod(cmd_doStop,
+                        Object.class);
+                Object invoke = method.invoke(null, thisObject
+                );
 
-            XposedBridge.log(" run script reflect result:" + invoke);
+                XposedBridge.log(" run script " + cmd_doStop +
+                        "reflect result:" + invoke);
+            }
 
         } catch (ClassNotFoundException e) {
-           XposedBridge.log(e);
+            XposedBridge.log(e);
         } catch (NoSuchMethodException e) {
             XposedBridge.log(e);
         } catch (IllegalAccessException e) {
