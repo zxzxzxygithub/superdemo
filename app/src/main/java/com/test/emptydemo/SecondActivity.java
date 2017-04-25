@@ -67,8 +67,8 @@ public class SecondActivity extends Activity implements View.OnClickListener {
             if (msg.what == MyService2.WHAT_CLIENT) {
                 Bundle bundle = msg.getData();
                 int result = bundle.getInt("result");
-                Log.d(TAG, "handleMessage: result_" + result);
-
+                Log.d(TAG, "client receive server handleMessage: result_" + result);
+                unbindBrotherService();
             }
         }
     }
@@ -76,7 +76,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
     final private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(TAG, "onServiceConnected: ");
+            Log.d(TAG, "client connected server: ");
             isBound = true;
             serverMessenger = new Messenger(service);
             Message message = Message.obtain();
@@ -89,7 +89,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
                 serverMessenger.send(message);
             } catch (RemoteException e) {
                 e.printStackTrace();
-                Log.d(TAG, "onServiceConnected: e_" + e);
+                Log.d(TAG, "client onServiceConnected: e_" + e);
             }
 
 
@@ -99,16 +99,15 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         public void onServiceDisconnected(ComponentName name) {
             isBound = false;
             serverMessenger = null;
-            Log.d(TAG, "onServiceDisconnected: ");
+            Log.d(TAG, "client onServiceDisconnected: ");
         }
     };
 
     private void bindBrotherService() {
         if (!isBound) {
-
             Intent serviceIntent = new Intent(this, MyService2.class);
             bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE);
-            Log.d(TAG, "bindBrotherService: ");
+            Log.d(TAG, "client bindBrotherService: ");
         }
 
     }
@@ -116,7 +115,8 @@ public class SecondActivity extends Activity implements View.OnClickListener {
     private void unbindBrotherService() {
         if (isBound) {
             unbindService(serviceConnection);
-            Log.d(TAG, "unbindBrotherService: ");
+            Log.d(TAG, "client unbindBrotherService: ");
+            isBound = false;
 
         }
     }
@@ -145,6 +145,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         clientMessenger = null;
+        unbindBrotherService();
     }
 }
 

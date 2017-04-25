@@ -27,14 +27,14 @@ public class MyService2 extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind: ");
+        Log.d(TAG, "server  onBind: ");
         return serverMessenger.getBinder();
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand: ");
+        Log.d(TAG, "server onStartCommand: ");
         return START_STICKY;
     }
 
@@ -43,7 +43,7 @@ public class MyService2 extends Service {
     public void onDestroy() {
         super.onDestroy();
         clientMessenger = null;
-        Log.d(TAG, "unbindService: ");
+        Log.d(TAG, "server onDestroy: ");
     }
 
     private class ServiceHandler extends Handler {
@@ -56,7 +56,7 @@ public class MyService2 extends Service {
                 Bundle bundle = msg.getData();
                 String cmd = bundle.getString("cmd");
                 if (!TextUtils.isEmpty(cmd)) {
-                    Log.d(TAG, "receive from client cmd : " + cmd);
+                    Log.d(TAG, "server receive from client cmd : " + cmd);
                 }
 
                 clientMessenger = msg.replyTo;
@@ -70,7 +70,7 @@ public class MyService2 extends Service {
                         clientMessenger.send(message);
                     } catch (RemoteException e) {
                         e.printStackTrace();
-                        Log.d(TAG, "exception: " + e);
+                        Log.d(TAG, "server exception: " + e);
                     }
                 }
 
@@ -78,4 +78,11 @@ public class MyService2 extends Service {
             }
         }
     }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.d(TAG, "server onUnbind: ");
+        return super.onUnbind(intent);
+    }
+
 }
