@@ -44,3 +44,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
 ```
+
+采用bindservice，使用messenger进行进程间通讯，server工程参考
+[https://github.com/zxzxzxygithub/remoteservice.git](https://github.com/zxzxzxygithub/remoteservice.git)
