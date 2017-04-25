@@ -36,16 +36,7 @@
                 <action android:name="com.test.emptydemo.service1" />
             </intent-filter>
         </service>
-        <service
-            android:name=".MyService2"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":service2"
-            >
-            <intent-filter>
-                <action android:name="com.test.emptydemo.service2" />
-            </intent-filter>
-        </service>
+
     </application>
 
 </manifest>

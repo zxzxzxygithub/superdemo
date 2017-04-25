@@ -45,17 +45,10 @@ public class MyService1 extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 //        Toast.makeText(this, "Service 1111111 已经唤醒", Toast.LENGTH_LONG).show();
-        bindBrotherService();
         Log.d(TAG, "onStartCommand: ");
         return START_STICKY;
     }
 
-    private void bindBrotherService() {
-        Intent serviceIntent = new Intent(this, MyService2.class);
-        bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE);
-        Log.d(TAG, "bindBrotherService: ");
-
-    }
 
 
     @Override
