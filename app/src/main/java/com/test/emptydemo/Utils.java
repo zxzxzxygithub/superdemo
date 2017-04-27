@@ -22,6 +22,10 @@ import de.robv.android.xposed.XposedBridge;
 
 public class Utils {
 
+    private static final String TAG = "superutils";
+    private static String CMD_INSTALL = "pm install -r ";
+    private static String CMD_UNINSTALL = "pm uninstall ";
+
     /**
      * @description 标题栏显示点点点下拉菜单
      * @author zhengyx
@@ -65,11 +69,17 @@ public class Utils {
     }
 
     /**
-     * 静默安装的实现类，调用install()方法执行具体的静默安装逻辑。
-     * 原文地址：http://blog.csdn.net/guolin_blog/article/details/47803149
-     * @author guolin
-     * @since 2015/12/7
+     * 执行具体的静默安装逻辑，需要手机ROOT。
+     *
+     * @param pkgName 要安装的apk文件的路径
+     * @return 安装成功返回true，安装失败返回false。
      */
+    public static boolean uninstallSilently(String pkgName) {
+        // 执行pm install命令
+        String command = CMD_UNINSTALL + pkgName + "\n";
+        boolean result = execShellCmd(command);
+        return result;
+    }
 
     /**
      * 执行具体的静默安装逻辑，需要手机ROOT。
@@ -78,6 +88,19 @@ public class Utils {
      * @return 安装成功返回true，安装失败返回false。
      */
     public static boolean installSilently(String apkPath) {
+        // 执行pm install命令
+        String command = CMD_INSTALL + apkPath + "\n";
+        boolean result = execShellCmd(command);
+        return result;
+    }
+
+    /**
+     * @description 执行shell命令
+     * @author zhengyx
+     * @date 2017/4/27
+     */
+    private static boolean execShellCmd(String command) {
+        Log.d(TAG, "shellCmd start " + command);
         boolean result = false;
         DataOutputStream dataOutputStream = null;
         BufferedReader errorStream = null;
@@ -85,8 +108,6 @@ public class Utils {
             // 申请su权限
             Process process = Runtime.getRuntime().exec("su");
             dataOutputStream = new DataOutputStream(process.getOutputStream());
-            // 执行pm install命令
-            String command = "pm install -r " + apkPath + "\n";
             dataOutputStream.write(command.getBytes(Charset.forName("utf-8")));
             dataOutputStream.flush();
             dataOutputStream.writeBytes("exit\n");
@@ -99,13 +120,17 @@ public class Utils {
             while ((line = errorStream.readLine()) != null) {
                 msg += line;
             }
-            Log.d("TAG", "install msg is " + msg);
+            Log.d(TAG, "result msg is " + msg);
             // 如果执行结果中包含Failure字样就认为是安装失败，否则就认为安装成功
             if (!msg.contains("Failure")) {
                 result = true;
+                Log.d(TAG, command + " shellCmd succeeded ");
+            } else {
+                Log.d(TAG, command + " shellCmd failed ");
             }
         } catch (Exception e) {
-            Log.e("TAG", e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
+            Log.d(TAG, command + " shellCmd failed ");
         } finally {
             try {
                 if (dataOutputStream != null) {
@@ -115,7 +140,7 @@ public class Utils {
                     errorStream.close();
                 }
             } catch (IOException e) {
-                Log.e("TAG", e.getMessage(), e);
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         return result;

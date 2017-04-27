@@ -51,7 +51,8 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.tv:
-                Utils.installSilently(Environment.getExternalStorageDirectory() + "/yyb.apk");
+
+
                 break;
         }
 
@@ -63,32 +64,28 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int groupId = 1;
         int itemId = 1;
         int order = 1;
-        String title = "this is an addmenu";
+        String title = "install ";
         menu.add(groupId, itemId, order, title);
-        menu.add("menu 2");
+        title = "uninstall ";
+        menu.add(groupId, itemId + 1, order + 1, title);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (featureId == Window.FEATURE_ACTION_BAR && menu != null) {
-            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
-                try {
-                    Method m = menu.getClass().getDeclaredMethod(
-                            "setOptionalIconsVisible", Boolean.TYPE);
-                    m.setAccessible(true);
-                    m.invoke(menu, true);
-                } catch (Exception e) {
-                }
-            }
-        }
-        return super.onMenuOpened(featureId, menu);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Toast.makeText(this, "clickitem_" + item.getItemId(), Toast.LENGTH_SHORT).show();
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case 1:
+                Utils.installSilently(Environment.getExternalStorageDirectory() + "/yyb.apk");
+                break;
+            case 2:
+                Utils.uninstallSilently("com.tencent.android.qqdownloader");
+                break;
+
+
+        }
         return false;
     }
 
