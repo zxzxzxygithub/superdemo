@@ -78,10 +78,22 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int itemId = item.getItemId();
         switch (itemId) {
             case 1:
-                Utils.installSilently(Environment.getExternalStorageDirectory() + "/yyb.apk");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Utils.installSilently(Environment.getExternalStorageDirectory() + "/yyb.apk");
+                    }
+                }).start();
+
                 break;
             case 2:
-                Utils.uninstallSilently("com.tencent.android.qqdownloader");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Utils.uninstallSilently("com.tencent.android.qqdownloader");
+                    }
+                }).start();
+
                 break;
 
 
