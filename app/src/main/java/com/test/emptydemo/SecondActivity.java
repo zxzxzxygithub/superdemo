@@ -3,6 +3,7 @@ package com.test.emptydemo;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -41,7 +42,6 @@ public class SecondActivity extends Activity implements View.OnClickListener {
 //        android.app.AlertDialog
 
 
-
     }
 
     @OnClick(R.id.tv)
@@ -51,9 +51,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.tv:
-                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-                String deviceId = telephonyManager.getDeviceId();
-                Toast.makeText(this, "deviceiD_" + deviceId, Toast.LENGTH_SHORT).show();
+                Utils.installSilently(Environment.getExternalStorageDirectory() + "/yyb.apk");
                 break;
         }
 
