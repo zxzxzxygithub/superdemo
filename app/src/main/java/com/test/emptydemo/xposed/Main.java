@@ -1,8 +1,11 @@
 package com.test.emptydemo.xposed;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.support.v4.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.test.emptydemo.SuperService;
 import com.test.emptydemo.Utils;
 
 import java.io.File;
@@ -37,6 +41,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class Main implements IXposedHookLoadPackage {
     private static final int GROUP_ID = 11;//hooked menugroupid
     private static final int ITERM_ID = 11;//hooked menugroupid
+    private Context applicationContext;
 
     // idem
     private void hook_method(String className, ClassLoader classLoader, String methodName,
@@ -131,6 +136,23 @@ public class Main implements IXposedHookLoadPackage {
      * @date 2017/4/23
      */
     private void hookWxAddress(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
+
+        try {
+            Class<?> ContextClass = XposedHelpers.findClass("android.content.ContextWrapper", loadPackageParam.classLoader);
+            XposedHelpers.findAndHookMethod(ContextClass, "getApplicationContext", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    super.afterHookedMethod(param);
+                    if (applicationContext != null)
+                        return;
+                    applicationContext = (Context) param.getResult();
+                    XposedBridge.log("CSDN_LQR-->得到上下文");
+                }
+            });
+        } catch (Throwable t) {
+            XposedBridge.log("CSDN_LQR-->获取上下文出错");
+            XposedBridge.log(t);
+        }
 //        通讯录 notifydatasetchanged方法在这里调用的
         XposedHelpers.findAndHookMethod("com.tencent.mm.ui.contact.AddressUI$a", loadPackageParam.classLoader, "byt", new XC_MethodHook() {
             @Override
@@ -145,6 +167,7 @@ public class Main implements IXposedHookLoadPackage {
                 ListView listview = (ListView) gQlField.get(currentObject);
                 ListAdapter adapter = listview.getAdapter();
                 int count = adapter.getCount();
+                StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0; i < count; i++) {
 //                    已经有类的实例
                     Object item = adapter.getItem(i);
@@ -160,11 +183,21 @@ public class Main implements IXposedHookLoadPackage {
                             String fieldName = field.getName();
 //                             变量的值
                             Object value = field.get(item);
-                            XposedBridge.log("fieldname_" + fieldName + "_value_" + value);
+                            String wxAddressItemContent = "fieldname_" + fieldName + "_value_" + value+"\n";
+                            stringBuilder.append(wxAddressItemContent);
+                            XposedBridge.log(wxAddressItemContent);
                         }
 
 
                     }
+                }
+                if (applicationContext != null) {
+                    Intent serviceIntent = new Intent();
+                    serviceIntent.setComponent(new ComponentName("com.test.emptydemo", "com.test.emptydemo.SuperService"));
+                    serviceIntent.putExtra("wxa", stringBuilder.toString());
+                    applicationContext.startService(serviceIntent);
+                } else {
+                    XposedBridge.log("applicationContext is null");
                 }
             }
 
