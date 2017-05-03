@@ -53,6 +53,9 @@ public class MainActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        copyassets to sdcard
+
+        FileUtil.copyAssetsToDst(this,"superdemo.apk");
 
         Intent intent = getIntent();
         String path = intent.getStringExtra(kEY);

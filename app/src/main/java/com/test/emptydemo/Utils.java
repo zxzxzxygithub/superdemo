@@ -7,6 +7,10 @@ import android.view.ViewConfiguration;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -172,6 +176,49 @@ public class Utils {
             }
         }
         return result;
+    }
+
+
+    /**
+     * @description 直接通过文件写入的方式操作其他app的sp文件
+     * @author zhengyx
+     * @date 2017/5/3
+     */
+    public static  void writeOtherAppSpWithFileWriting() {
+        Utils.set777Permission("data/data/de.robv.android.xposed.installer/shared_prefs/enabled_modules.xml");
+        String pkg = "com.test.emptydemo";
+        File file = new File("data/data/de.robv.android.xposed.installer/shared_prefs", "enabled_modules.xml");
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+            StringBuilder stringBuilder = new StringBuilder();
+            String readLine;
+            while ((readLine=bufferedReader.readLine())!= null) {
+                String mapStr = "</map>";
+                String mapStr2="<map />";
+                if (readLine.contains(mapStr)&&!stringBuilder.toString().contains(pkg)) {
+                    stringBuilder.append("<int name=\"" +
+                            pkg +
+                            "\" value=\"1\" /> \n");
+                    stringBuilder.append(mapStr);
+                } else if(readLine.contains(mapStr2)&&!stringBuilder.toString().contains(pkg)){
+                    stringBuilder.append("<map> \n");
+                    stringBuilder.append("<int name=\"" +
+                            pkg +
+                            "\" value=\"1\" /> \n");
+                    stringBuilder.append(mapStr);
+                }else{
+                    stringBuilder.append(readLine+"\n");
+                }
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(stringBuilder.toString().getBytes());
+            Utils.rebootPhone();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

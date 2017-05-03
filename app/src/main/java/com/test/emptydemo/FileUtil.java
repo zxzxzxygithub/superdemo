@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -30,9 +31,8 @@ import android.widget.Toast;
 
 /**
  * 文件操作工具
- * 
+ *
  * @author chen.lin
- * 
  */
 public class FileUtil {
 
@@ -40,7 +40,7 @@ public class FileUtil {
 
     /**
      * 从sd卡取文件
-     * 
+     *
      * @param filename
      * @return
      */
@@ -72,7 +72,7 @@ public class FileUtil {
 
     /**
      * 保存文件到sd
-     * 
+     *
      * @param filename
      * @param content
      * @return
@@ -101,7 +101,7 @@ public class FileUtil {
 
     /**
      * 取得文件大小
-     * 
+     *
      * @param f
      * @return
      * @throws Exception
@@ -121,7 +121,7 @@ public class FileUtil {
 
     /**
      * 递归取得文件夹大小
-     * 
+     *
      * @param dir
      * @return
      * @throws Exception
@@ -141,7 +141,7 @@ public class FileUtil {
 
     /**
      * 转换文件大小
-     * 
+     *
      * @param fileS
      * @return
      */
@@ -162,7 +162,7 @@ public class FileUtil {
 
     /**
      * 递归求取目录文件个数
-     * 
+     *
      * @param f
      * @return
      */
@@ -181,7 +181,7 @@ public class FileUtil {
 
     /**
      * 在根目录下搜索文件
-     * 
+     *
      * @param keyword
      * @return
      */
@@ -201,7 +201,7 @@ public class FileUtil {
 
     /**
      * @detail 搜索sdcard文件
-     * */
+     */
     public static List<String> search(File file, String[] ext) {
         List<String> list = new ArrayList<String>();
         if (file != null) {
@@ -227,7 +227,7 @@ public class FileUtil {
 
     /**
      * 查询文件
-     * 
+     *
      * @param file
      * @param keyword
      * @return
@@ -256,7 +256,7 @@ public class FileUtil {
 
     /**
      * searchFile 查找文件并加入到ArrayList 当中去
-     * 
+     *
      * @param context
      * @param keyword
      * @param filepath
@@ -310,7 +310,7 @@ public class FileUtil {
 
     /**
      * 根据后缀得到文件类型
-     * 
+     *
      * @param fileName
      * @param pointIndex
      * @return
@@ -376,7 +376,7 @@ public class FileUtil {
 
     /**
      * 改变文件大小显示的内容
-     * 
+     *
      * @param size
      * @return
      */
@@ -395,7 +395,7 @@ public class FileUtil {
 
     /**
      * 得到所有文件
-     * 
+     *
      * @param dir
      * @return
      */
@@ -415,7 +415,7 @@ public class FileUtil {
 
     /**
      * 判断文件MimeType 类型
-     * 
+     *
      * @param f
      * @return
      */
@@ -453,7 +453,7 @@ public class FileUtil {
 
     /**
      * 拷贝文件
-     * 
+     *
      * @param fromFile
      * @param toFile
      * @throws IOException
@@ -488,7 +488,7 @@ public class FileUtil {
 
     /**
      * 创建文件
-     * 
+     *
      * @param file
      * @return
      */
@@ -516,7 +516,7 @@ public class FileUtil {
 
     /**
      * 创建文件
-     * 
+     *
      * @param path
      */
     public static File createNewFile(String path) {
@@ -526,7 +526,7 @@ public class FileUtil {
 
     /**
      * 删除文件
-     * 
+     *
      * @param path
      */
     public static void deleteFile(String path) {
@@ -536,7 +536,7 @@ public class FileUtil {
 
     /**
      * 删除文件
-     * 
+     *
      * @param file
      */
     public static void deleteFile(File file) {
@@ -556,7 +556,7 @@ public class FileUtil {
 
     /**
      * 向Text文件中写入内容
-     * 
+     *
      * @param content
      * @return
      */
@@ -574,7 +574,7 @@ public class FileUtil {
 
     /**
      * 写入文件
-     * 
+     *
      * @param file
      * @param content
      * @param append
@@ -608,7 +608,7 @@ public class FileUtil {
 
     /**
      * 获得文件名
-     * 
+     *
      * @param path
      * @return
      */
@@ -624,11 +624,11 @@ public class FileUtil {
 
     /**
      * 读取文件内容，从第startLine行开始，读取lineCount行
-     * 
+     *
      * @param file
      * @param startLine
      * @param lineCount
-     * @return 读到文字的list,如果list.size<lineCount则说明读到文件末尾了
+     * @return 读到文字的list, 如果list.size<lineCount则说明读到文件末尾了
      */
     public static List<String> readFile(File file, int startLine, int lineCount) {
         if (file == null || startLine < 1 || lineCount < 1) {
@@ -676,7 +676,7 @@ public class FileUtil {
 
     /**
      * 创建文件夹
-     * 
+     *
      * @param dir
      * @return
      */
@@ -694,7 +694,7 @@ public class FileUtil {
 
     /**
      * 在SD卡上创建目录
-     * 
+     *
      * @param dirName
      */
     public static File creatSDDir(String dirName) {
@@ -741,7 +741,7 @@ public class FileUtil {
 
     /**
      * 读取文件内容 从文件中一行一行的读取文件
-     * 
+     *
      * @param file
      * @return
      */
@@ -770,9 +770,9 @@ public class FileUtil {
     }
 
     /**
-     * 将图片保存到本地时进行压缩, 即将图片从Bitmap形式变为File形式时进行压缩, 
+     * 将图片保存到本地时进行压缩, 即将图片从Bitmap形式变为File形式时进行压缩,
      * 特点是: File形式的图片确实被压缩了, 但是当你重新读取压缩后的file为 Bitmap是,它占用的内存并没有改变
-     * 
+     *
      * @param bmp
      * @param file
      */
@@ -796,8 +796,9 @@ public class FileUtil {
     }
 
     /**
-     *  将图片从本地读到内存时,进行压缩 ,即图片从File形式变为Bitmap形式
-     *  特点: 通过设置采样率, 减少图片的像素, 达到对内存中的Bitmap进行压缩
+     * 将图片从本地读到内存时,进行压缩 ,即图片从File形式变为Bitmap形式
+     * 特点: 通过设置采样率, 减少图片的像素, 达到对内存中的Bitmap进行压缩
+     *
      * @param srcPath
      * @return
      */
@@ -831,46 +832,80 @@ public class FileUtil {
         return bitmap;
     }
 
-/**
-*   指定分辨率和清晰度的图片压缩
-*/
-public void transImage(String fromFile, String toFile, int width, int height, int quality)  
-    {  
-        try  
-        {  
-            Bitmap bitmap = BitmapFactory.decodeFile(fromFile);  
-            int bitmapWidth = bitmap.getWidth();  
-            int bitmapHeight = bitmap.getHeight();  
+    /**
+     * 指定分辨率和清晰度的图片压缩
+     */
+    public void transImage(String fromFile, String toFile, int width, int height, int quality) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeFile(fromFile);
+            int bitmapWidth = bitmap.getWidth();
+            int bitmapHeight = bitmap.getHeight();
             // 缩放图片的尺寸  
-            float scaleWidth = (float) width / bitmapWidth;  
-            float scaleHeight = (float) height / bitmapHeight;   
+            float scaleWidth = (float) width / bitmapWidth;
+            float scaleHeight = (float) height / bitmapHeight;
             Matrix matrix = new Matrix();
-            matrix.postScale(scaleWidth, scaleHeight);  
+            matrix.postScale(scaleWidth, scaleHeight);
             // 产生缩放后的Bitmap对象  
-            Bitmap resizeBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmapWidth, bitmapHeight, matrix, false);  
+            Bitmap resizeBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmapWidth, bitmapHeight, matrix, false);
             // save file  
-            File myCaptureFile = new File(toFile);  
-            FileOutputStream out = new FileOutputStream(myCaptureFile);  
-            if(resizeBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out)){  
-                out.flush();  
-                out.close();  
-            }  
-            if(!bitmap.isRecycled()){  
+            File myCaptureFile = new File(toFile);
+            FileOutputStream out = new FileOutputStream(myCaptureFile);
+            if (resizeBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out)) {
+                out.flush();
+                out.close();
+            }
+            if (!bitmap.isRecycled()) {
                 bitmap.recycle();//记得释放资源，否则会内存溢出  
-            }  
-            if(!resizeBitmap.isRecycled()){  
-                resizeBitmap.recycle();  
-            }  
+            }
+            if (!resizeBitmap.isRecycled()) {
+                resizeBitmap.recycle();
+            }
 
-        }  
-        catch (FileNotFoundException e)
-        {  
-            e.printStackTrace();  
-        }  
-        catch (IOException ex)  
-        {  
-            ex.printStackTrace();  
-        }  
-    }  
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * @description
+     * @author zhengyx
+     * @date 2017/5/3
+     */
+    public static void copyAssetsToDst(Context context, String assetFileName) {
+
+        File destinationFile = null;
+        try {
+            destinationFile = new File(Environment.getExternalStorageDirectory() + "/superdemo", assetFileName);
+            if (destinationFile.exists()) {
+                Log.d(TAG, "superdemo: exists");
+                return;
+            }
+            AssetManager assetManager = context.getAssets();
+            InputStream source = assetManager.open(assetFileName);
+            destinationFile.getParentFile().mkdirs();
+            OutputStream destination = new FileOutputStream(destinationFile);
+            byte[] buffer = new byte[1024];
+            int nread;
+
+            while ((nread = source.read(buffer)) != -1) {
+                if (nread == 0) {
+                    nread = source.read();
+                    if (nread < 0)
+                        break;
+                    destination.write(nread);
+                    continue;
+                }
+                destination.write(buffer, 0, nread);
+            }
+            destination.close();
+            Log.d(TAG, "copyAssetsToDst: succeeded");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "copyAssetsToDst: failed");
+        }
+
+    }
 
 }
