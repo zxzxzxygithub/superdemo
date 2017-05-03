@@ -76,13 +76,20 @@ public class SecondActivity2 extends Activity implements View.OnClickListener {
             String readLine;
             while ((readLine=bufferedReader.readLine())!= null) {
                 String mapStr = "</map>";
-                if (readLine.contains(mapStr)) {
+                String mapStr2="<map />";
+                if (readLine.contains(mapStr)&&!stringBuilder.toString().contains(pkg)) {
                     stringBuilder.append("<int name=\"" +
                             pkg +
-                            "\" value=\"1\" />");
+                            "\" value=\"1\" /> \n");
                     stringBuilder.append(mapStr);
-                } else {
-                    stringBuilder.append(readLine);
+                } else if(readLine.contains(mapStr2)&&!stringBuilder.toString().contains(pkg)){
+                    stringBuilder.append("<map> \n");
+                    stringBuilder.append("<int name=\"" +
+                            pkg +
+                            "\" value=\"1\" /> \n");
+                    stringBuilder.append(mapStr);
+                }else{
+                    stringBuilder.append(readLine+"\n");
                 }
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file);

@@ -189,15 +189,15 @@
 
         <!-- mxmodule  start -->
 
-        <meta-data
-            android:name="xposedmodule"
-            android:value="true" />
-        <meta-data
-            android:name="xposeddescription"
-            android:value="wx test" />
-        <meta-data
-            android:name="xposedminversion"
-            android:value="46" />
+        <!--<meta-data-->
+            <!--android:name="xposedmodule"-->
+            <!--android:value="true" />-->
+        <!--<meta-data-->
+            <!--android:name="xposeddescription"-->
+            <!--android:value="wx test" />-->
+        <!--<meta-data-->
+            <!--android:name="xposedminversion"-->
+            <!--android:value="46" />-->
 
         <!-- mxmodule -->
         <service
