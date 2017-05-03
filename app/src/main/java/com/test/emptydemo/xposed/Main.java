@@ -63,35 +63,52 @@ public class Main implements IXposedHookLoadPackage {
 
     public void handleLoadPackage4release(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
 // 过滤掉非微信
-//        if (!loadPackageParam.packageName.equals("com.tencent.mm")) {
-//            return;
-//        }
+        if (!loadPackageParam.packageName.equals("com.tencent.mm")) {
+            return;
+        }
         hookWxAddress(loadPackageParam);
-        hookWxMainPage(loadPackageParam);
-//        hookMenu(loadPackageParam);
         hookDialog(loadPackageParam);
-//        尝试hook wxmodule
-        tryTohookWxModule(loadPackageParam);
-//        尝试hook wxmodule  end
         XposedBridge.log("---handleLoadPackage4release---------5");
         Log.d("testnoreboot", "handleLoadPackage4release: 123456");
     }
 
+
     /**
-     * @description 微信首页
+     * @description 微信通讯录页面
      * @author zhengyx
      * @date 2017/4/23
      */
-    private void hookWxMainPage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.LauncherUI", loadPackageParam.classLoader, "vx", int.class, new XC_MethodHook() {
+    private void hookWxAddress(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
+        final ClassLoader classLoader = loadPackageParam.classLoader;
+        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.LauncherUI", classLoader, "onResume",  new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 super.afterHookedMethod(methodHookParam);
-                if ((Integer) methodHookParam.args[0] == 1) {
-//                    通讯录的类是  com.tencent.mm.ui.contact.AddressUI$a
-                    XposedBridge.log("LauncherUI  vx   result_ " + methodHookParam.getResult().getClass());
-                    Log.d("demotestxp", "oncreate enable dotmenu");
-                }
+                XposedBridge.log(("-------------------------------------------\n" +"hook address start turnto address tab\n" +
+                                "-----------------------------------------------").toUpperCase());
+                XposedBridge.log(("-------------------------------------------\n" +"hook address start turnto address tab\n" +
+                                "-----------------------------------------------").toUpperCase());
+//
+                Object thisObject = methodHookParam.thisObject;
+//
+                Class<?> mainUiClass = classLoader.loadClass("com.tencent.mm.ui.LauncherUI");
+//                Field nCPField = mainUiClass.getDeclaredField("nCP");
+//                nCPField.setAccessible(true);
+//                Object ncpInstance = nCPField.get(mainUiClass.newInstance());
+//                Class<?> ncpClass = classLoader.loadClass("com.tencent.mm.ui.mogic.WxViewPager");
+//                Method kMethod = ncpClass.getMethod("k", int.class, boolean.class);
+//                kMethod.invoke(ncpInstance,1,false);
+//
+                Method changeTabMethod = mainUiClass.getDeclaredMethod("vw",int.class);
+                changeTabMethod.setAccessible(true);
+                changeTabMethod.invoke(thisObject, 1);
+//                XposedHelpers.callMethod(thisObject,"vx",1);
+                XposedBridge.log(("-------------------------------------\n" +
+                        "hook address start turnto address tab succeeded \n" +
+                        "----------------------------------------").toUpperCase());
+                XposedBridge.log(("--------------------------------------\n" +
+                        "hook address start turnto address tab succeeded \n" +
+                        "-----------------------------------------").toUpperCase());
             }
 
             @Override
@@ -100,17 +117,9 @@ public class Main implements IXposedHookLoadPackage {
 
             }
         });
-    }
-
-    /**
-     * @description 微信通讯录页面
-     * @author zhengyx
-     * @date 2017/4/23
-     */
-    private void hookWxAddress(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
 
         try {
-            Class<?> ContextClass = XposedHelpers.findClass("android.content.ContextWrapper", loadPackageParam.classLoader);
+            Class<?> ContextClass = XposedHelpers.findClass("android.content.ContextWrapper", classLoader);
             XposedHelpers.findAndHookMethod(ContextClass, "getApplicationContext", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -126,7 +135,7 @@ public class Main implements IXposedHookLoadPackage {
             XposedBridge.log(t);
         }
 //        通讯录 notifydatasetchanged方法在这里调用的
-        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.contact.AddressUI$a", loadPackageParam.classLoader, "byt", new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.contact.AddressUI$a", classLoader, "byt", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 super.afterHookedMethod(methodHookParam);
@@ -147,7 +156,7 @@ public class Main implements IXposedHookLoadPackage {
                         XposedBridge.log("AddressUI$a  byt_ findlistviewitem_i_" + i + "_" +
                                 item);
 //                       反射获取类的变量的值
-                        Class<?> beanClass = loadPackageParam.classLoader.loadClass("com.tencent.mm.storage.f");
+                        Class<?> beanClass = classLoader.loadClass("com.tencent.mm.storage.f");
                         Field[] declaredFields = beanClass.getDeclaredFields();
                         for (Field field :
                                 declaredFields) {
@@ -180,7 +189,7 @@ public class Main implements IXposedHookLoadPackage {
 
             }
         });
-        XposedHelpers.findAndHookMethod("com.tencent.mm.storage.f", loadPackageParam.classLoader, "b", Cursor.class, new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("com.tencent.mm.storage.f", classLoader, "b", Cursor.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 super.afterHookedMethod(methodHookParam);
@@ -421,6 +430,32 @@ public class Main implements IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 super.beforeHookedMethod(methodHookParam);
 
+
+            }
+        });
+    }
+
+    /**
+     * @description 微信首页
+     * @author zhengyx
+     * @date 2017/4/23
+     */
+    private void hookWxMainPage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.LauncherUI", loadPackageParam.classLoader, "vx", int.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+                super.afterHookedMethod(methodHookParam);
+                if ((Integer) methodHookParam.args[0] == 1) {
+//                    通讯录的类是  com.tencent.mm.ui.contact.AddressUI$a
+                    XposedBridge.log("LauncherUI  vx   result_ " + methodHookParam.getResult().getClass());
+                    Log.d("demotestxp", "oncreate enable dotmenu");
+                }
+            }
+
+            @Override
+            protected void beforeHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+                super.beforeHookedMethod(methodHookParam);
 
             }
         });
