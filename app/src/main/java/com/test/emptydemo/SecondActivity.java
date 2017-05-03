@@ -1,11 +1,10 @@
 package com.test.emptydemo;
 
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +35,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.tv:
-                Toast.makeText(this, "hello world", Toast.LENGTH_SHORT).show();
+                startService(new Intent(SecondActivity.this, BatteryService.class));
                 break;
         }
 
