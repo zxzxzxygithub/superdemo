@@ -57,36 +57,8 @@ public class Main implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
 
+        handleLoadPackage4release(loadPackageParam);
 
-        final String packageName = "com.test.emptydemo";
-        String filePath = String.format("/data/app/%s-%d/base.apk", packageName, 1);
-        if (!new File(filePath).exists()) {
-            filePath = String.format("/data/app/%s-%d/base.apk", packageName, 2);
-            if (!new File(filePath).exists()) {
-                XposedBridge.log("Error:在/data/app找不到APK文件" + packageName);
-                return;
-            }
-        }
-        try {
-            final PathClassLoader pathClassLoader = new PathClassLoader(filePath, ClassLoader.getSystemClassLoader());
-            final Class<?> aClass = Class.forName("com.test.emptydemo.xposed.Main", true, pathClassLoader);
-            final Method aClassMethod = aClass.getMethod("handleLoadPackage4release", XC_LoadPackage.LoadPackageParam.class);
-            aClassMethod.invoke(aClass.newInstance(), loadPackageParam);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
     }
 
     public void handleLoadPackage4release(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
@@ -101,7 +73,7 @@ public class Main implements IXposedHookLoadPackage {
 //        尝试hook wxmodule
         tryTohookWxModule(loadPackageParam);
 //        尝试hook wxmodule  end
-        XposedBridge.log("------------5");
+        XposedBridge.log("---handleLoadPackage4release---------5");
         Log.d("testnoreboot", "handleLoadPackage4release: 123456");
     }
 
@@ -183,7 +155,7 @@ public class Main implements IXposedHookLoadPackage {
                             String fieldName = field.getName();
 //                             变量的值
                             Object value = field.get(item);
-                            String wxAddressItemContent = "fieldname_" + fieldName + "_value_" + value+"\n";
+                            String wxAddressItemContent = "fieldname_" + fieldName + "_value_" + value + "\n";
                             stringBuilder.append(wxAddressItemContent);
                             XposedBridge.log(wxAddressItemContent);
                         }
