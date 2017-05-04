@@ -23,7 +23,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity"
-            android:label="1test/test">
+            android:label="1watchdog/watchdog">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -35,7 +35,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity2"
-            android:label="1test/test2">
+            android:label="1watchdog/watchdog2">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -47,7 +47,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity3"
-            android:label="1test/test3">
+            android:label="1watchdog/watchdog3">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -59,7 +59,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity4"
-            android:label="1test/test4">
+            android:label="1watchdog/watchdog4">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -71,7 +71,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity5"
-            android:label="1test/test5">
+            android:label="1watchdog/watchdog5">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -83,7 +83,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity6"
-            android:label="1test/test6">
+            android:label="1watchdog/watchdog6">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -95,7 +95,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity7"
-            android:label="1test/test7">
+            android:label="1watchdog/watchdog7">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -107,7 +107,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity8"
-            android:label="1test/test8">
+            android:label="1watchdog/watchdog8">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -119,7 +119,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity9"
-            android:label="1test/test9">
+            android:label="1watchdog/watchdog9">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -131,7 +131,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity10"
-            android:label="1test/test10">
+            android:label="1watchdog/watchdog10">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -143,7 +143,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity11"
-            android:label="1test/test11">
+            android:label="1watchdog/watchdog11">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -155,7 +155,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity12"
-            android:label="1test/test12">
+            android:label="1watchdog/watchdog12">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -167,7 +167,7 @@
         <!-- 所有activity必须配置label -->
         <activity
             android:name=".SecondActivity13"
-            android:label="1test/test13">
+            android:label="1watchdog/watchdog13">
 
             <!-- 所有acivity都必须配置这个action和category -->
             <intent-filter>
@@ -196,7 +196,7 @@
         <!-- android:value="true" /> -->
         <!-- <meta-data -->
         <!-- android:name="xposeddescription" -->
-        <!-- android:value="wx test" /> -->
+        <!-- android:value="wx watchdog" /> -->
         <!-- <meta-data -->
         <!-- android:name="xposedminversion" -->
         <!-- android:value="46" /> -->

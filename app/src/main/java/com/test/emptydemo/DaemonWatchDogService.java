@@ -9,7 +9,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class DaemonWatchDogService extends Service {
-    private static final String TAG = "daemonservice";
+    private static final String TAG = "DaemonWatchDogService";
 
     @Override
     public void onCreate() {
