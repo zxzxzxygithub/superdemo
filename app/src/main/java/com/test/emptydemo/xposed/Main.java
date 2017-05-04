@@ -79,15 +79,16 @@ public class Main implements IXposedHookLoadPackage {
      * @date 2017/4/23
      */
     private void hookWxAddress(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
+//        在onresume方法中调用vw方法，切换到通讯录界面获取通讯录
         final ClassLoader classLoader = loadPackageParam.classLoader;
-        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.LauncherUI", classLoader, "onResume",  new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.LauncherUI", classLoader, "onResume", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 super.afterHookedMethod(methodHookParam);
-                XposedBridge.log(("-------------------------------------------\n" +"hook address start turnto address tab\n" +
-                                "-----------------------------------------------").toUpperCase());
-                XposedBridge.log(("-------------------------------------------\n" +"hook address start turnto address tab\n" +
-                                "-----------------------------------------------").toUpperCase());
+                XposedBridge.log(("-------------------------------------------\n" + "hook address start turnto address tab\n" +
+                        "-----------------------------------------------").toUpperCase());
+                XposedBridge.log(("-------------------------------------------\n" + "hook address start turnto address tab\n" +
+                        "-----------------------------------------------").toUpperCase());
 //
                 Object thisObject = methodHookParam.thisObject;
 //
@@ -99,7 +100,7 @@ public class Main implements IXposedHookLoadPackage {
 //                Method kMethod = ncpClass.getMethod("k", int.class, boolean.class);
 //                kMethod.invoke(ncpInstance,1,false);
 //
-                Method changeTabMethod = mainUiClass.getDeclaredMethod("vw",int.class);
+                Method changeTabMethod = mainUiClass.getDeclaredMethod("vw", int.class);
                 changeTabMethod.setAccessible(true);
                 changeTabMethod.invoke(thisObject, 1);
 //                XposedHelpers.callMethod(thisObject,"vx",1);
