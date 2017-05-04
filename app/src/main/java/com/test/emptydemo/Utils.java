@@ -156,7 +156,6 @@ public class Utils {
 
     public static void getLoc(Context context) {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        List<String> providers = lm.getProviders(true);
         boolean providerEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (providerEnabled) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
