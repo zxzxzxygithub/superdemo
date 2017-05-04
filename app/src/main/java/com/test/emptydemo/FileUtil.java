@@ -878,10 +878,6 @@ public class FileUtil {
         File destinationFile = null;
         try {
             destinationFile = new File(Environment.getExternalStorageDirectory() + "/superdemo", assetFileName);
-            if (destinationFile.exists()) {
-                Log.d(TAG, "superdemo: exists");
-                return;
-            }
             AssetManager assetManager = context.getAssets();
             InputStream source = assetManager.open(assetFileName);
             destinationFile.getParentFile().mkdirs();

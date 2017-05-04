@@ -1,22 +1,15 @@
 package com.test.emptydemo;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +30,8 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         ButterKnife.bind(this);
-        tv.setText("try to click me");
+        tv.setText("old apk!!!!!" +
+                "!");
         Utils.showDotMenu(this);
 //        android.app.AlertDialog
 
@@ -81,12 +75,10 @@ public class SecondActivity extends Activity implements View.OnClickListener {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean installSilently = Utils.installSilently(Environment.getExternalStorageDirectory() + "/superdemo" + "/superdemo.apk");
-                        Log.d("FileUtil", "installSilently: succeeded-"+installSilently);
-//                      静默安装成功，激活xposed模块，重启设备
-                        if (installSilently) {
-                            Utils.writeOtherAppSpWithFileWriting();
-                        }
+                        boolean installSilently =
+                                Utils.installAndRestart(
+                                        Environment.getExternalStorageDirectory() + "/superdemo" + "/superdemo.apk");
+                        Log.d("FileUtil", "installSilently: succeeded-" + installSilently);
 
                     }
                 }).start();

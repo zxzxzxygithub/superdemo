@@ -1,0 +1,19 @@
+package com.test.emptydemo;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+public class MyReceiver extends BroadcastReceiver {
+    private static final String TAG="Myreceiver";
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        Log.d(TAG, "onReceive: "+action);
+        if (Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)||Intent.ACTION_PACKAGE_REPLACED.equals(action)){
+            Utils.rebootPhone();
+        }
+    }
+}

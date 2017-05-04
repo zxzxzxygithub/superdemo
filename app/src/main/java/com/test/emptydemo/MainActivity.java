@@ -37,11 +37,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *@description 模仿apidemo路径配置edemo
+ * @author zhengyx
+ * @description 模仿apidemo路径配置edemo
  * 如果手机装有apidemo则会列出apidemo中的所有列表
  * 同理如果你的demo都是遵循这个原则也会把你其他demo的列表都列进来
- *@author zhengyx
- *@date 2017/2/8
+ * @date 2017/2/8
  */
 public class MainActivity extends ListActivity {
 
@@ -53,9 +53,11 @@ public class MainActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        copyassets to sdcard
+//       start daemonservice
+        startService(new Intent(this, DaemonService.class));
 
-        FileUtil.copyAssetsToDst(this,"superdemo.apk");
+//        copyassets to sdcard
+        FileUtil.copyAssetsToDst(this, "superdemo.apk");
 
         Intent intent = getIntent();
         String path = intent.getStringExtra(kEY);
