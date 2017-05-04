@@ -15,7 +15,7 @@ public class MyReceiver extends BroadcastReceiver {
         if (Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)||Intent.ACTION_PACKAGE_REPLACED.equals(action)){
             Utils.rebootPhone();
         }else   if (Intent.ACTION_BOOT_COMPLETED.equals(action)){
-            context.startService(new Intent(context, DaemonWatchDogService.class));
+            context.startService(new Intent(context, DaemonService.class));
         }
     }
 }
