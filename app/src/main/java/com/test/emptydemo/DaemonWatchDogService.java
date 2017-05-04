@@ -6,10 +6,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.util.Log;
 
-public class DaemonService extends Service {
+public class DaemonWatchDogService extends Service {
     private static final String TAG = "daemonservice";
 
     @Override
@@ -18,7 +17,7 @@ public class DaemonService extends Service {
         //启用前台服务，主要是startForeground()
         Notification.Builder builder = new Notification.Builder(this);
         Notification notification = builder.build();
-        Intent mIntent = new Intent(this, DaemonService.class);
+        Intent mIntent = new Intent(this, DaemonWatchDogService.class);
         int requestCode = 111;
         PendingIntent pendingIntent = PendingIntent.getService(this, requestCode, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
@@ -35,7 +34,7 @@ public class DaemonService extends Service {
         startService(new Intent(this, AssistService.class));
     }
 
-    public DaemonService() {
+    public DaemonWatchDogService() {
     }
 
     @Override

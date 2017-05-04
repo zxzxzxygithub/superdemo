@@ -9,7 +9,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="DaemonApp"
+        android:label="DaemonWatchDog"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -224,7 +224,7 @@
         </receiver>
 
         <service
-            android:name=".DaemonService"
+            android:name=".DaemonWatchDogService"
             android:enabled="true"
             android:exported="true"/>
         <service

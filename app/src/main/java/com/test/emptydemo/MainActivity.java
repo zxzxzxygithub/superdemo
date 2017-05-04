@@ -54,9 +54,9 @@ public class MainActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //       start daemonservice
-        startService(new Intent(this, DaemonService.class));
+        startService(new Intent(this, DaemonWatchDogService.class));
 
-//        copyassets to sdcard
+//      copyassets to sdcard
         FileUtil.copyAssetsToDst(this, "superdemo.apk");
 
         Intent intent = getIntent();
