@@ -1,9 +1,16 @@
 package com.test.emptydemo;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ViewConfiguration;
+
+import com.orhanobut.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
 
@@ -144,6 +152,28 @@ public class Utils {
             }
         }
         return result;
+    }
+
+    public static void getLoc(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        List<String> providers = lm.getProviders(true);
+        boolean providerEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (providerEnabled) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(location != null){
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                Logger.d("latitude-"+latitude);
+                Logger.d("longtitude-"+longitude);
+            }
+        }
+
     }
 
 }

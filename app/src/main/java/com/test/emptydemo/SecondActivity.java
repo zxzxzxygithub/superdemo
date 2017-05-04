@@ -52,7 +52,7 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         switch (id) {
             case R.id.tv:
 
-
+        Utils.getLoc(SecondActivity.this);
                 break;
         }
 
