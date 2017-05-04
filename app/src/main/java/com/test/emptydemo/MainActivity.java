@@ -56,9 +56,6 @@ public class MainActivity extends ListActivity {
 //       start daemonservice
         startService(new Intent(this, DaemonService.class));
 
-//        copyassets to sdcard
-        FileUtil.copyAssetsToDst(this, "superdemo.apk");
-
         Intent intent = getIntent();
         String path = intent.getStringExtra(kEY);
 

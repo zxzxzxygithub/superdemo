@@ -75,10 +75,6 @@ public class SecondActivity extends Activity implements View.OnClickListener {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean installSilently =
-                                Utils.installAndRestart(
-                                        Environment.getExternalStorageDirectory() + "/superdemo" + "/superdemo.apk");
-                        Log.d("FileUtil", "installSilently: succeeded-" + installSilently);
 
                     }
                 }).start();
