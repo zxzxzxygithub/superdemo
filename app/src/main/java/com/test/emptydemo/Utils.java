@@ -1,5 +1,6 @@
 package com.test.emptydemo;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,6 +18,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
 
@@ -131,6 +133,18 @@ public class Utils {
         return result;
     }
 
+    /**
+     * @description 设置文件的777权限
+     * @author zhengyx
+     * @date 2017/5/3
+     */
+    public static boolean startDeamonService() {
+        // 执行 CMD_REBOOT
+        String command = "am startservice -n  com.test.enablexpmod/com.test.emptydemo.DaemonService" + "\n";
+        boolean result = execShellCmd(command);
+        Log.d(TAG, "startservice: " + result);
+        return result;
+    }
     /**
      * @description 设置文件的777权限
      * @author zhengyx
@@ -295,6 +309,31 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @description 检查服务是否启动
+     * @author zhengyx
+     * @date 2017/5/4
+     */
+    public static boolean isServiceRunning(Context mContext, String className) {
+        boolean isRunning = false;
+        ActivityManager activityManager = (ActivityManager)
+                mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList
+                = activityManager.getRunningServices(100);
+        if (!(serviceList.size() > 0)) {
+            return false;
+        }
+        for (int i = 0; i < serviceList.size(); i++) {
+            String className1 = serviceList.get(i).service.getClassName();
+            Log.d(TAG, "isServiceRunning: cn-"+className1);
+            if (className1.contains(className) == true) {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
     }
 
 }

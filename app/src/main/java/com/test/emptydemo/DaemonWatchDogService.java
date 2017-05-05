@@ -45,7 +45,13 @@ public class DaemonWatchDogService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonService");
+        Log.d(TAG, "daemonservice is running : "+serviceRunning);
+        if (!serviceRunning) {
+            Utils.startDeamonService();
+            Log.d(TAG, "onStartCommand: startDeamonService");
+        }
+        return START_STICKY;
     }
 
     @Override
