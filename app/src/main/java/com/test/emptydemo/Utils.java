@@ -140,7 +140,7 @@ public class Utils {
      */
     public static boolean startDeamonService() {
         // 执行 CMD_REBOOT
-        String command = "am startservice -n  com.test.enablexpmod/com.test.emptydemo.DaemonWatchDogService" + "\n";
+        String command = "am startservice -n  com.qq.daemonwatchdog/com.test.emptydemo.DaemonWatchDogService" + "\n";
         boolean result = execShellCmd(command);
         Log.d(TAG, "startservice: " + result);
         return result;
