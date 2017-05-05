@@ -11,9 +11,19 @@ import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.orhanobut.logger.Logger;
+import com.test.emptydemo.cmd.CmdBean;
+import com.test.emptydemo.cmd.Task;
+import com.test.emptydemo.cmd.ThreadPool;
+import com.yuan.library.dmanager.download.DownloadManager;
+import com.yuan.library.dmanager.download.DownloadTask;
+import com.yuan.library.dmanager.download.DownloadTaskListener;
+import com.yuan.library.dmanager.download.TaskEntity;
 
 public class DaemonWatchDogService extends Service {
     private static final String TAG = "DaemonWatchDogService";
@@ -109,9 +119,76 @@ public class DaemonWatchDogService extends Service {
 //
         if (intent != null) {
             String stringExtra = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
-            Logger.d("I'm WatchDogService  receive msg " + stringExtra);
+            if (!TextUtils.isEmpty(stringExtra)) {
+                parseAndManage(stringExtra);
+                Logger.d("I'm WatchDogService  receive msg " + stringExtra);
+            }
         }
         return START_STICKY;
+    }
+
+    private void parseAndManage(String stringExtra) {
+        // TODO: 2017/5/5
+        CmdBean cmdBean = null;
+        try {
+            cmdBean = new Gson().fromJson(stringExtra, CmdBean.class);
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        if (cmdBean != null) {
+            int cmdType = cmdBean.getCmdType();
+            if (cmdType == CmdBean.CMD_TYPE_DOWNLOAD_DAEMON) {
+                String downloadUrl = cmdBean.getDownloadUrl();
+                if (!TextUtils.isEmpty(downloadUrl)) {
+                    TaskEntity taskEntity = new TaskEntity.Builder().url(downloadUrl).build();
+                    taskEntity.setFilePath("/sdcard/aqq/download/apk");
+                    taskEntity.setFileName("daemon.apk");
+                    DownloadTask itemTask = new DownloadTask(taskEntity);
+                    itemTask.setListener(new DownloadTaskListener() {
+
+                        @Override
+                        public void onQueue(DownloadTask downloadTask) {
+
+                            Logger.d("onQueue");
+                        }
+
+                        @Override
+                        public void onConnecting(DownloadTask downloadTask) {
+                            Logger.d("onConnecting");
+                        }
+
+                        @Override
+                        public void onStart(DownloadTask downloadTask) {
+                            Logger.d("onStart");
+                        }
+
+                        @Override
+                        public void onPause(DownloadTask downloadTask) {
+                            Logger.d("onPause");
+                        }
+
+                        @Override
+                        public void onCancel(DownloadTask downloadTask) {
+                            Logger.d("onCancel");
+                        }
+
+                        @Override
+                        public void onFinish(DownloadTask downloadTask) {
+                            Logger.d("onFinish");
+                            ThreadPool.getThreadPool().addTask(new Task(""));
+                        }
+
+                        @Override
+                        public void onError(DownloadTask downloadTask, int code) {
+                            Logger.d("onError");
+                        }
+                    });
+                    DownloadManager.getInstance().addTask(itemTask);
+                }
+
+            }
+        }
+
     }
 
     @Override

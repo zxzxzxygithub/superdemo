@@ -7,7 +7,7 @@ package com.test.emptydemo.cmd;
  */
 public class CmdBean {
 
-    private static final int CMD_TYPE_DOWNLOAD_DAEMON=1;
+    public static final int CMD_TYPE_DOWNLOAD_DAEMON=1;
     private int cmdType;
     private int cmd;
     private String downloadUrl;

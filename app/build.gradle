@@ -56,4 +56,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile project(':downloadlibrary')
     compile 'com.orhanobut:logger:1.15'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
