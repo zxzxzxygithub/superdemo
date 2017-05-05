@@ -111,6 +111,7 @@ public class DaemonWatchDogService extends Service {
     public void onDestroy() {
         super.onDestroy();
         stopForeground(true);
+        unbindService(conn);
         startService(new Intent(this, DaemonWatchDogService.class));
         Log.d(TAG, ": onDestroy");
     }
