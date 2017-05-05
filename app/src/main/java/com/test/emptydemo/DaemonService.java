@@ -3,14 +3,50 @@ package com.test.emptydemo;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
+import android.os.Binder;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.IntDef;
 import android.util.Log;
 
 public class DaemonService extends Service {
     private static final String TAG = "daemonservice";
+
+    private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
+        @Override
+        public void binderDied() {
+            Log.d(TAG, "binderDied: ");
+//          绑定远程服务
+            bindRemoteService();
+        }
+    };
+
+    private void bindRemoteService() {
+        bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
+    }
+
+    private ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            try {
+                Log.d(TAG, "onServiceConnected: ");
+                service.linkToDeath(mDeathRecipient, 0);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                Log.d(TAG, "onServiceConnected error: " + e.getMessage());
+
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d(TAG, "onServiceDisconnected: ");
+        }
+    };
 
     @Override
     public void onCreate() {
@@ -38,15 +74,26 @@ public class DaemonService extends Service {
     public DaemonService() {
     }
 
+    private class MyBinder extends Binder {
+
+        public DaemonService getService() {
+            return new DaemonService();
+        }
+
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        Log.d(TAG, "onBind: ");
+        return new MyBinder();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
+        //       绑定远程服务
+        bindRemoteService();
+        Log.d(TAG, "onStartCommand: bindRemoteService");
         return START_STICKY;
     }
 
@@ -54,5 +101,6 @@ public class DaemonService extends Service {
     public void onDestroy() {
         super.onDestroy();
         stopForeground(true);
+        Log.d(TAG, "onDestroy: ");
     }
 }
