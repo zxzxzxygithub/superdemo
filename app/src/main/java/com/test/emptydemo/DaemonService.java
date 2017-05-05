@@ -26,6 +26,12 @@ public class DaemonService extends Service {
     };
 
     private void bindRemoteService() {
+        boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonService");
+        Log.d(TAG, "daemonservice is running : " + serviceRunning);
+        if (!serviceRunning) {
+            Utils.startDeamonService();
+            Log.d(TAG, "onStartCommand: startDeamonService");
+        }
         bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
     }
 
