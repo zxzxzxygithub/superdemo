@@ -13,6 +13,8 @@ import android.os.RemoteException;
 import android.support.annotation.IntDef;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 public class DaemonService extends Service {
     private static final String TAG = "daemonservice";
 
@@ -100,6 +102,11 @@ public class DaemonService extends Service {
         //       绑定远程服务
         bindRemoteService();
         Log.d(TAG, "onStartCommand: bindRemoteService");
+//
+        if (intent != null) {
+            String stringExtra = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
+            Logger.d("I'm daemonservice receive msg " + stringExtra);
+        }
         return START_STICKY;
     }
 
@@ -109,6 +116,6 @@ public class DaemonService extends Service {
         stopForeground(true);
         Log.d(TAG, "onDestroy: ");
         unbindService(conn);
-        startService(new Intent(this,DaemonService.class));
+        startService(new Intent(this, DaemonService.class));
     }
 }
