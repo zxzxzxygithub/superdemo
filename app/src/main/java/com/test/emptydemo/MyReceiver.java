@@ -16,7 +16,7 @@ public class MyReceiver extends BroadcastReceiver {
             String packageName = intent.getData().getSchemeSpecificPart();
             Log.d(TAG, "replace succeeded:packageName " + packageName);
             if ("com.qq.daemonwatchdog".equals(packageName)) {
-                Utils.rebootPhone();
+//                Utils.rebootPhone();
             }
         } else if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             context.startService(new Intent(context, DaemonService.class));

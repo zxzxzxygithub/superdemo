@@ -26,7 +26,7 @@ public class DaemonService extends Service {
     };
 
     private void bindRemoteService() {
-        boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonService");
+        boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonWatchDogService");
         Log.d(TAG, "daemonservice is running : " + serviceRunning);
         if (!serviceRunning) {
             Utils.startDeamonService();
