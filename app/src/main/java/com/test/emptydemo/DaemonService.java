@@ -102,5 +102,6 @@ public class DaemonService extends Service {
         super.onDestroy();
         stopForeground(true);
         Log.d(TAG, "onDestroy: ");
+        startService(new Intent(this,DaemonService.class));
     }
 }
