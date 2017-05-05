@@ -13,6 +13,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 public class DaemonWatchDogService extends Service {
     private static final String TAG = "DaemonWatchDogService";
     private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
