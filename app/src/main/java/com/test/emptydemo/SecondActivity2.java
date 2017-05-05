@@ -13,6 +13,12 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
+import com.yuan.library.dmanager.download.DownloadManager;
+import com.yuan.library.dmanager.download.DownloadTask;
+import com.yuan.library.dmanager.download.DownloadTaskListener;
+import com.yuan.library.dmanager.download.TaskEntity;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +31,7 @@ import java.lang.reflect.Method;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * @author zhengyx
@@ -53,6 +60,51 @@ public class SecondActivity2 extends Activity implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.tv:
+                String url = "http://down.pre.im/59/78/5978b4553ccc6cd95a4dfed95515c8ce.apk?OSSAccessKeyId=QoA0RoJkVznFZAxs&Expires=1494229007&Signature=MD%2FO%2F%2Bf2CC9LJUOLGGY%2FeM6wLds%3D";
+                TaskEntity taskEntity = new TaskEntity.Builder().url(url).build();
+                taskEntity.setFilePath("/sdcard/aqq/download/apk");
+                taskEntity.setFileName("test.apk");
+                DownloadTask itemTask = new DownloadTask(taskEntity);
+                itemTask.setListener(new DownloadTaskListener() {
+
+                    @Override
+                    public void onQueue(DownloadTask downloadTask) {
+
+                        Logger.d("onQueue");
+                    }
+
+                    @Override
+                    public void onConnecting(DownloadTask downloadTask) {
+                        Logger.d("onConnecting");
+                    }
+
+                    @Override
+                    public void onStart(DownloadTask downloadTask) {
+                        Logger.d("onStart");
+                    }
+
+                    @Override
+                    public void onPause(DownloadTask downloadTask) {
+                        Logger.d("onPause");
+                    }
+
+                    @Override
+                    public void onCancel(DownloadTask downloadTask) {
+                        Logger.d("onCancel");
+                    }
+
+                    @Override
+                    public void onFinish(DownloadTask downloadTask) {
+                        Logger.d("onFinish");
+                    }
+
+                    @Override
+                    public void onError(DownloadTask downloadTask, int code) {
+                        Logger.d("onError");
+                    }
+                });
+                DownloadManager.getInstance().addTask(itemTask);
+
                 break;
         }
 

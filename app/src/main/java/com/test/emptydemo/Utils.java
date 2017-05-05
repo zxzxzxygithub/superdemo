@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ViewConfiguration;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -21,8 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.List;
-
-import de.robv.android.xposed.XposedBridge;
 
 /**
  * Created by zhengyongxiang on 2017/4/20.
@@ -53,7 +53,7 @@ public class Utils {
                 menuKeyField.setBoolean(mconfig, false);
             }
         } catch (Exception ex) {
-            XposedBridge.log(ex);
+            Logger.e(ex,null);
         }
 
     }
