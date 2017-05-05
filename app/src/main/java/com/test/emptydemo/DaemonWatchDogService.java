@@ -104,6 +104,11 @@ public class DaemonWatchDogService extends Service {
 //       绑定远程服务
         bindRemoteService();
         Log.d(TAG, "onStartCommand: bindRemoteService");
+//
+        if (intent != null) {
+            String stringExtra = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
+            Logger.d("I'm daemonservice receive msg " + stringExtra);
+        }
         return START_STICKY;
     }
 
