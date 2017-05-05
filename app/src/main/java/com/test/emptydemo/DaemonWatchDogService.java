@@ -83,6 +83,7 @@ public class DaemonWatchDogService extends Service {
         private Context context;
 
         public MyBinder(Context context) {
+            super();
             this.context = context;
         }
 
