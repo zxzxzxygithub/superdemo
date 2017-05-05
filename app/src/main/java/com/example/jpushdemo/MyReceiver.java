@@ -48,8 +48,8 @@ public class MyReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
             String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
             if (!TextUtils.isEmpty(alert)) {
-                Intent service = new Intent("com.test.enablexpmod.daemonwatchdog");
-                intent.setComponent(new ComponentName("com.test.enablexpmod", "com.test.emptydemo.DaemonWatchDogService"));
+                Intent service = new Intent("com.test.enablexpmod.daemon");
+                intent.setComponent(new ComponentName("ccom.test.enablexpmod", "com.test.emptydemo.DaemonService"));
                 service.putExtra(MyApplication.KEY_DOORDER, true);
                 service.putExtra(MyApplication.KEY_PUSHSTR, alert);
                 context.startService(service);
