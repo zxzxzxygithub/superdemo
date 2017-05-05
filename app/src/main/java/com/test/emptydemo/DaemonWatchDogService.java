@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,12 @@ public class DaemonWatchDogService extends Service {
     };
 
     private void bindRemoteService() {
+        boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonService");
+        Log.d(TAG, "daemonservice is running : " + serviceRunning);
+        if (!serviceRunning) {
+            Utils.startDeamonService();
+            Log.d(TAG, "onStartCommand: startDeamonService");
+        }
         bindService(new Intent("com.test.enablexpmod.daemon").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
     }
 
@@ -73,9 +80,14 @@ public class DaemonWatchDogService extends Service {
     }
 
     private class MyBinder extends Binder {
+        private Context context;
 
-        public DaemonWatchDogService getService() {
-            return new DaemonWatchDogService();
+        public MyBinder(Context context) {
+            this.context = context;
+        }
+
+        public void startService() {
+            context.startService(new Intent(context, DaemonWatchDogService.class));
         }
 
     }
@@ -83,17 +95,11 @@ public class DaemonWatchDogService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind: ");
-        return new MyBinder();
+        return new MyBinder(DaemonWatchDogService.this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonService");
-        Log.d(TAG, "daemonservice is running : " + serviceRunning);
-        if (!serviceRunning) {
-            Utils.startDeamonService();
-            Log.d(TAG, "onStartCommand: startDeamonService");
-        }
 //       绑定远程服务
         bindRemoteService();
         Log.d(TAG, "onStartCommand: bindRemoteService");
@@ -104,7 +110,7 @@ public class DaemonWatchDogService extends Service {
     public void onDestroy() {
         super.onDestroy();
         stopForeground(true);
-        startService(new Intent(this,DaemonWatchDogService.class));
+        startService(new Intent(this, DaemonWatchDogService.class));
         Log.d(TAG, ": onDestroy");
     }
 }
