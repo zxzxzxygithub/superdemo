@@ -1,7 +1,9 @@
 package com.test.emptydemo;
 
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ViewConfiguration;
@@ -334,6 +336,18 @@ public class Utils {
             }
         }
         return isRunning;
+    }
+
+    /**
+     * @description 打开微信
+     * @author zhengyx
+     * @date 2017/4/14
+     */
+    public static void openWeChat(Context context) {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 }
