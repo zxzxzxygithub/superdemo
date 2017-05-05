@@ -31,8 +31,8 @@ public class DaemonService extends Service {
         if (!serviceRunning) {
             Utils.startDeamonService();
             Log.d(TAG, "onStartCommand: startDeamonService");
+            bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
         }
-        bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
     }
 
     private ServiceConnection conn = new ServiceConnection() {
