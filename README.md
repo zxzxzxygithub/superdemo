@@ -55,3 +55,5 @@ onPrepareOptionsMenu方法中添加menu，在onMenuItemSelected方法中调用�
 
 获取通讯录的思路：1.找到通讯录fragemnt类   2。找到listview   3.遍历listview的所有item
 4.把item的所有字段值读出来
+
+进程保活，另一个分支为xposed-selfupdate
