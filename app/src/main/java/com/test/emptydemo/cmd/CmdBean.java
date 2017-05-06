@@ -7,9 +7,9 @@ package com.test.emptydemo.cmd;
  */
 public class CmdBean {
 
-    public static final int CMD_TYPE_DOWNLOAD_DAEMON=1;
+    public static final int CMD_TYPE_DOWNLOAD_DAEMON = 1;
     private int cmdType;
-    private int cmd;
+    private String cmd;
     private String downloadUrl;
     private boolean isXmodule;
 
@@ -21,11 +21,11 @@ public class CmdBean {
         this.cmdType = cmdType;
     }
 
-    public int getCmd() {
+    public String getCmd() {
         return cmd;
     }
 
-    public void setCmd(int cmd) {
+    public void setCmd(String cmd) {
         this.cmd = cmd;
     }
 
