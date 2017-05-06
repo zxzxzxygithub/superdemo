@@ -22,6 +22,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -212,6 +214,15 @@ public class Utils {
         return result;
     }
 
+    /**
+     * @description 执行shell命令
+     * @author zhengyx
+     * @date 2017/4/27
+     */
+    public static boolean execShellCmds(ArrayList<String> commands) {
+        String[] objects = (String[]) commands.toArray();
+        return  execShellCmds(objects);
+    }
     /**
      * @description 执行shell命令
      * @author zhengyx

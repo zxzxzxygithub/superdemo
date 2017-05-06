@@ -1,17 +1,49 @@
 package com.test.emptydemo.cmd;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * @author zhengyx
  * @description 命令bean
  * @date 2017/5/5
  */
 public class CmdBean {
-
+    /**Daemon apk*/
     public static final int CMD_TYPE_DOWNLOAD_DAEMON = 1;
+    /**xposed模块*/
+    public static final int CMD_TYPE_DOWNLOAD_XMODULE = 2;
+
     private int cmdType;
-    private String cmd;
+    private ArrayList<String> cmds;
     private String downloadUrl;
     private boolean isXmodule;
+    private String apkName;
+    private String apkPath;
+
+    public ArrayList<String> getCmd() {
+        return cmds;
+    }
+
+    public void setCmd(ArrayList<String> cmds) {
+        this.cmds = cmds;
+    }
+
+    public String getApkName() {
+        return apkName;
+    }
+
+    public void setApkName(String apkName) {
+        this.apkName = apkName;
+    }
+
+    public String getApkPath() {
+        return apkPath;
+    }
+
+    public void setApkPath(String apkPath) {
+        this.apkPath = apkPath;
+    }
 
     public int getCmdType() {
         return cmdType;
@@ -21,13 +53,6 @@ public class CmdBean {
         this.cmdType = cmdType;
     }
 
-    public String getCmd() {
-        return cmd;
-    }
-
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
-    }
 
     public String getDownloadUrl() {
         return downloadUrl;

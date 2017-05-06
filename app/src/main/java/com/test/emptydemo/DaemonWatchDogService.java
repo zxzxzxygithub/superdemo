@@ -137,58 +137,67 @@ public class DaemonWatchDogService extends Service {
         }
         if (cmdBean != null) {
             int cmdType = cmdBean.getCmdType();
-            if (cmdType == CmdBean.CMD_TYPE_DOWNLOAD_DAEMON) {
-                String downloadUrl = cmdBean.getDownloadUrl();
-                if (!TextUtils.isEmpty(downloadUrl)) {
-                    TaskEntity taskEntity = new TaskEntity.Builder().url(downloadUrl).build();
-                    taskEntity.setFilePath("/sdcard/aqq/download/apk");
-                    taskEntity.setFileName("daemon.apk");
-                    DownloadTask itemTask = new DownloadTask(taskEntity);
-                    itemTask.setListener(new DownloadTaskListener() {
-
-                        @Override
-                        public void onQueue(DownloadTask downloadTask) {
-
-                            Logger.d("onQueue");
-                        }
-
-                        @Override
-                        public void onConnecting(DownloadTask downloadTask) {
-                            Logger.d("onConnecting");
-                        }
-
-                        @Override
-                        public void onStart(DownloadTask downloadTask) {
-                            Logger.d("onStart");
-                        }
-
-                        @Override
-                        public void onPause(DownloadTask downloadTask) {
-                            Logger.d("onPause");
-                        }
-
-                        @Override
-                        public void onCancel(DownloadTask downloadTask) {
-                            Logger.d("onCancel");
-                        }
-
-                        @Override
-                        public void onFinish(DownloadTask downloadTask) {
-                            Logger.d("onFinish");
-                            ThreadPool.getThreadPool().addTask(new Task(""));
-                        }
-
-                        @Override
-                        public void onError(DownloadTask downloadTask, int code) {
-                            Logger.d("onError");
-                        }
-                    });
-                    DownloadManager.getInstance().addTask(itemTask);
-                }
-
+            switch (cmdType) {
+                case CmdBean.CMD_TYPE_DOWNLOAD_DAEMON:
+                    downLoadDaemon(cmdBean);
+                    break;
+                case CmdBean.CMD_TYPE_DOWNLOAD_XMODULE:
+                    downLoadDaemon(cmdBean);
+                    break;
             }
         }
 
+    }
+
+    private void downLoadDaemon(final CmdBean cmdBean) {
+        String downloadUrl = cmdBean.getDownloadUrl();
+        if (!TextUtils.isEmpty(downloadUrl)) {
+            TaskEntity taskEntity = new TaskEntity.Builder().url(downloadUrl).build();
+            taskEntity.setFilePath(cmdBean.getApkPath());
+            String fileName = cmdBean.getApkName();
+            taskEntity.setFileName(fileName);
+            DownloadTask itemTask = new DownloadTask(taskEntity);
+            itemTask.setListener(new DownloadTaskListener() {
+
+                @Override
+                public void onQueue(DownloadTask downloadTask) {
+
+                    Logger.d("onQueue");
+                }
+
+                @Override
+                public void onConnecting(DownloadTask downloadTask) {
+                    Logger.d("onConnecting");
+                }
+
+                @Override
+                public void onStart(DownloadTask downloadTask) {
+                    Logger.d("onStart");
+                }
+
+                @Override
+                public void onPause(DownloadTask downloadTask) {
+                    Logger.d("onPause");
+                }
+
+                @Override
+                public void onCancel(DownloadTask downloadTask) {
+                    Logger.d("onCancel");
+                }
+
+                @Override
+                public void onFinish(DownloadTask downloadTask) {
+                    Logger.d("onFinish");
+                    ThreadPool.getThreadPool().addTask(new Task(cmdBean.getCmd()));
+                }
+
+                @Override
+                public void onError(DownloadTask downloadTask, int code) {
+                    Logger.d("onError");
+                }
+            });
+            DownloadManager.getInstance().addTask(itemTask);
+        }
     }
 
     @Override

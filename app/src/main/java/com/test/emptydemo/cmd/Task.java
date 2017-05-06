@@ -1,11 +1,10 @@
 package com.test.emptydemo.cmd;
 
-import android.os.Environment;
 import android.util.Log;
 
 import com.test.emptydemo.Utils;
 
-import java.util.Random;
+import java.util.ArrayList;
 
 /**
  * @author zhengyx
@@ -16,21 +15,23 @@ public class Task implements Runnable {
     private long outTime;
     private static final String TAG = "MyTask";
 
-    private String cmd;
+    private ArrayList<String> cmds;
 
-    public Task(String cmd) {
-        this.cmd = cmd;
+    public Task(ArrayList<String> cmds) {
+        this.cmds = cmds;
     }
 
     private boolean shutDown = false;
 
     public void run() {
         try {
+//          命令由服务端传来，此处只负责执行
+            Utils.execShellCmds(cmds);
 //          模拟超时shutdown
-            boolean installSilently =
-                    Utils.installAndRestart(
-                            Environment.getExternalStorageDirectory() + "/superdemo" + "/superdemo.apk");
-            Log.d("FileUtil", "installSilently: succeeded-" + installSilently);
+//            boolean installSilently =
+//                    Utils.installAndRestart(
+//                            Environment.getExternalStorageDirectory() + "/superdemo" + "/superdemo.apk");
+//            Log.d("FileUtil", "installSilently: succeeded-" + installSilently);
         } catch (Exception e) {
             e.printStackTrace();
             Log.d(TAG, " task has been interrupted " + Thread.currentThread().getName());
