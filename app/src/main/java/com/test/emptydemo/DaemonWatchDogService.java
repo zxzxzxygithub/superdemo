@@ -120,6 +120,10 @@ public class DaemonWatchDogService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //            start jpush
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+        Logger.d("onStartCommand restart jpush: ");
 //       绑定远程服务
         bindRemoteService();
         Log.d(TAG, "onStartCommand: bindRemoteService");
