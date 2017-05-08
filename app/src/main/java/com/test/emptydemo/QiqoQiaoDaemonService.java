@@ -103,6 +103,10 @@ public class QiqoQiaoDaemonService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //            start jpush
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+        Logger.d("onStartCommand restart jpush: ");
         Log.d(TAG, "onStartCommand: ");
         //       绑定远程服务
         bindRemoteService();
