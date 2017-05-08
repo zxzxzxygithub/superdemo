@@ -20,14 +20,7 @@ public class CmdBean {
     private boolean isXmodule;
     private String apkName;
     private String apkPath;
-
-    public ArrayList<String> getCmd() {
-        return cmds;
-    }
-
-    public void setCmd(ArrayList<String> cmds) {
-        this.cmds = cmds;
-    }
+    private long timeout;
 
     public String getApkName() {
         return apkName;
@@ -69,4 +62,24 @@ public class CmdBean {
     public void setXmodule(boolean xmodule) {
         isXmodule = xmodule;
     }
+
+    public ArrayList<String> getCmds() {
+        return cmds;
+    }
+
+    public void setCmds(ArrayList<String> cmds) {
+        this.cmds = cmds;
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
+    }
+
+
+
+
 }
