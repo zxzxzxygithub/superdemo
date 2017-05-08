@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ViewConfiguration;
@@ -345,7 +347,6 @@ public class Utils {
         }
         for (int i = 0; i < serviceList.size(); i++) {
             String className1 = serviceList.get(i).service.getClassName();
-            Log.d(TAG, "isServiceRunning: cn-" + className1);
             if (className1.contains(className) == true) {
                 isRunning = true;
                 break;
@@ -364,6 +365,29 @@ public class Utils {
         intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+
+    /**
+     * @description 查看应用是否已安装
+     * @author zhengyx
+     * @date 2017/5/8
+     */
+    public static boolean isAppInstalled(Context context, String packagename) {
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            Logger.d("pkg:"+packagename+"_not installed ");
+            return false;
+        } else {
+            Logger.d("pkg:"+packagename+"_installed ");
+            return true;
+        }
     }
 
 }

