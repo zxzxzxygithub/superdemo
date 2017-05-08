@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ViewConfiguration;
@@ -22,6 +24,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,7 +57,7 @@ public class Utils {
                 menuKeyField.setBoolean(mconfig, false);
             }
         } catch (Exception ex) {
-            Logger.e(ex,null);
+            Logger.e(ex, null);
         }
 
     }
@@ -147,6 +151,7 @@ public class Utils {
         Log.d(TAG, "startservice: " + result);
         return result;
     }
+
     /**
      * @description 设置文件的777权限
      * @author zhengyx
@@ -217,6 +222,17 @@ public class Utils {
      * @author zhengyx
      * @date 2017/4/27
      */
+    public static boolean execShellCmds(ArrayList<String> commands) {
+        String[] objects = new String[commands.size()];
+        objects = commands.toArray(objects);
+        return execShellCmds(objects);
+    }
+
+    /**
+     * @description 执行shell命令
+     * @author zhengyx
+     * @date 2017/4/27
+     */
     private static boolean execShellCmds(String[] commands) {
         boolean result = false;
         DataOutputStream dataOutputStream = null;
@@ -227,6 +243,7 @@ public class Utils {
             dataOutputStream = new DataOutputStream(process.getOutputStream());
             for (String command :
                     commands) {
+                Logger.d(command);
                 dataOutputStream.write(command.getBytes(Charset.forName("utf-8")));
                 dataOutputStream.flush();
             }
@@ -240,17 +257,17 @@ public class Utils {
             while ((line = errorStream.readLine()) != null) {
                 msg += line;
             }
-            Log.d(TAG, "result msg is " + msg);
+            Logger.d("result msg is " + msg);
             // 如果执行结果中包含Failure字样就认为是安装失败，否则就认为安装成功
             if (!msg.contains("Failure")) {
                 result = true;
-                Log.d(TAG, commands + " shellCmd succeeded ");
+                Logger.d(commands + " shellCmd succeeded ");
             } else {
-                Log.d(TAG, commands + " shellCmd failed ");
+                Logger.d(commands + " shellCmd failed ");
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            Log.d(TAG, commands + " shellCmd failed ");
+            Logger.d(e.getMessage());
+            Logger.d(commands + " shellCmd failed ");
         } finally {
             try {
                 if (dataOutputStream != null) {
@@ -259,8 +276,9 @@ public class Utils {
                 if (errorStream != null) {
                     errorStream.close();
                 }
+                Logger.d(TAG, "closestream");
             } catch (IOException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Logger.d(e.getMessage());
             }
         }
         return result;
@@ -347,6 +365,29 @@ public class Utils {
         intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+
+    /**
+     * @description 查看应用是否已安装
+     * @author zhengyx
+     * @date 2017/5/8
+     */
+    public static boolean isAppInstalled(Context context, String packagename) {
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            Logger.d("pkg:"+packagename+"_not installed ");
+            return false;
+        } else {
+            Logger.d("pkg:"+packagename+"_installed ");
+            return true;
+        }
     }
 
 }

@@ -13,6 +13,8 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.orhanobut.logger.Logger;
+import com.test.emptydemo.cmd.Task;
+import com.test.emptydemo.cmd.ThreadPool;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -35,7 +37,7 @@ public class QiqoQiaoDaemonService extends Service {
 //
             Utils.startDeamonService();
             Log.d(TAG, "onStartCommand: startDeamonService");
-            bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
+            bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.qq.daemonwatchdog"), conn, BIND_AUTO_CREATE);
         }
     }
 
@@ -97,24 +99,36 @@ public class QiqoQiaoDaemonService extends Service {
         //            start jpush
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-      Logger.d("onBind restart jpush: ");
+        Logger.d("onBind restart jpush: ");
         return new MyBinder();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+//        setlogger
+        Logger.init().methodCount(0).hideThreadInfo();
+
+
         //            start jpush
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         Logger.d("onStartCommand restart jpush: ");
         Log.d(TAG, "onStartCommand: ");
-        //       绑定远程服务
-        bindRemoteService();
-        Log.d(TAG, "onStartCommand: bindRemoteService");
-//
+
         if (intent != null) {
             String stringExtra = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
             Logger.d("I'm daemonservice receive msg " + stringExtra);
+        }
+
+        boolean watchdogInstalled = Utils.isAppInstalled(this, "com.qq.daemonwatchdog");
+        if (!watchdogInstalled) {
+            ThreadPool threadPool = ThreadPool.getThreadPool();
+            threadPool.addTask(new Task(threadPool, null));
+            Logger.d("watchdogInstalled false  --  testtask outoftime");
+        } else {
+            //       绑定远程服务
+            bindRemoteService();
+            Logger.d("watchdogInstalled bindRemoteService");
         }
         return START_STICKY;
     }

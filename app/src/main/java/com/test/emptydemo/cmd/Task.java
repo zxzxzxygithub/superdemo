@@ -2,7 +2,12 @@ package com.test.emptydemo.cmd;
 
 import android.util.Log;
 
-import java.util.Random;
+import com.orhanobut.logger.Logger;
+import com.test.emptydemo.Utils;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author zhengyx
@@ -10,47 +15,43 @@ import java.util.Random;
  * @date 2017/5/3
  */
 public class Task implements Runnable {
-    private long outTime;
+    private  ThreadPool threadPool;
+    private long outTime=1000;
     private static final String TAG = "MyTask";
-    //统计每个线程总共执行了多少个任务
-    private static ThreadLocal<Integer> dealTaskCount = new ThreadLocal<>();
 
-    private String cmd;
+    private ArrayList<String> cmds;
 
-    public Task(String cmd) {
-        this.cmd = cmd;
+    private TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+            Logger.d("outoftime  threadPool.removeTask");
+            threadPool.removeTask(Task.this);
+        }
+    };
+    private Timer timer;
+
+    public Task(ThreadPool threadPool,ArrayList<String> cmds) {
+        this.threadPool = threadPool;
+        this.cmds = cmds;
+        timer = new Timer();
     }
-
-    private boolean shutDown = false;
 
     public void run() {
-        if (dealTaskCount==null){
-            dealTaskCount=new ThreadLocal<>();
+        if (outTime != 0) {
+            timer.schedule(timerTask, outTime);
+            Logger.d(" timer.schedule(timerTask--outtime--" + outTime);
         }
-        Integer taskCount = dealTaskCount.get();
-        taskCount = taskCount == null ? 1 : ++taskCount;
-        dealTaskCount.set(taskCount);
-
-        Log.d(TAG, Thread.currentThread().getName() + " dealing task: " + cmd + ", complete task:" + taskCount);
         try {
-            int nextInt = new Random().nextInt(10000);
-            Log.d(TAG, "run: randonint " + nextInt);
-//          模拟超时shutdown
+//            Utils.execShellCmds(cmds);
             Thread.sleep(10000);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Log.d(TAG, " task has been interrupted " + Thread.currentThread().getName());
-            dealTaskCount.remove();
-            dealTaskCount = null;
+            timer.cancel();
+            Logger.d("interrupted timer cancel");
         }
+        timer.cancel();
+        Logger.d("finish run timer cancel");
     }
 
-    /**
-     * @description 外部结束任务
-     * @author zhengyx
-     * @date 2017/5/3
-     */
-    public void shutDown() {
-        shutDown = true;
-    }
 }
