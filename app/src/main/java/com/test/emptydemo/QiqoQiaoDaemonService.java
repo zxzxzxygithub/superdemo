@@ -14,6 +14,8 @@ import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class QiqoQiaoDaemonService extends Service {
     private static final String TAG = "daemonservice";
 
@@ -30,6 +32,10 @@ public class QiqoQiaoDaemonService extends Service {
         boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonWatchDogService");
         Log.d(TAG, "DaemonWatchDogService is running : " + serviceRunning);
         if (!serviceRunning) {
+            //            start jpush
+            JPushInterface.setDebugMode(true);
+            JPushInterface.init(this);
+//
             Utils.startDeamonService();
             Log.d(TAG, "onStartCommand: startDeamonService");
             bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
