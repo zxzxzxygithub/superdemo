@@ -6,6 +6,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
 import com.yuan.library.dmanager.db.DaoManager;
 import com.yuan.library.dmanager.utils.FileUtils;
 import com.yuan.library.dmanager.utils.IOUtils;
@@ -107,7 +108,7 @@ public class DownloadTask implements Runnable {
             } catch (IllegalArgumentException e) {
                 mTaskEntity.setTaskStatus(TaskStatus.TASK_STATUS_REQUEST_ERROR);
                 handler.sendEmptyMessage(TaskStatus.TASK_STATUS_REQUEST_ERROR);
-                Log.d("DownloadTask", e.getMessage());
+                Logger.d("illegalargument-"+e.getMessage());
                 return;
             }
 
@@ -153,17 +154,21 @@ public class DownloadTask implements Runnable {
             } else {
                 mTaskEntity.setTaskStatus(TaskStatus.TASK_STATUS_REQUEST_ERROR);
                 handler.sendEmptyMessage(TaskStatus.TASK_STATUS_REQUEST_ERROR);
+                Logger.d("response failed_"+response.code()+"_msg_"+response.message());
             }
 
 
         } catch (FileNotFoundException e) {
             mTaskEntity.setTaskStatus(TaskStatus.TASK_STATUS_STORAGE_ERROR);
             handler.sendEmptyMessage(TaskStatus.TASK_STATUS_STORAGE_ERROR);
+            Logger.d("filenotefound-"+mTaskEntity.getFilePath()+"-"+mTaskEntity.getFileName());
         } catch (SocketTimeoutException | ConnectException e) {
             mTaskEntity.setTaskStatus(TaskStatus.TASK_STATUS_REQUEST_ERROR);
             handler.sendEmptyMessage(TaskStatus.TASK_STATUS_REQUEST_ERROR);
+            Logger.d("sockettimeout or connection e");
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.d("io e");
         } finally {
             IOUtils.close(bis, inputStream, tempFile);
         }
