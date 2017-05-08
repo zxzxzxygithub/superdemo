@@ -329,7 +329,6 @@ public class Utils {
         }
         for (int i = 0; i < serviceList.size(); i++) {
             String className1 = serviceList.get(i).service.getClassName();
-            Log.d(TAG, "isServiceRunning: cn-"+className1);
             if (className1.contains(className) == true) {
                 isRunning = true;
                 break;
