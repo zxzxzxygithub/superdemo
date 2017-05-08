@@ -220,7 +220,8 @@ public class Utils {
      * @date 2017/4/27
      */
     public static boolean execShellCmds(ArrayList<String> commands) {
-        String[] objects = (String[]) commands.toArray();
+        String[] objects=new String[commands.size()];
+        objects=commands.toArray(objects);
         return  execShellCmds(objects);
     }
     /**
@@ -238,6 +239,7 @@ public class Utils {
             dataOutputStream = new DataOutputStream(process.getOutputStream());
             for (String command :
                     commands) {
+                Logger.d(command);
                 dataOutputStream.write(command.getBytes(Charset.forName("utf-8")));
                 dataOutputStream.flush();
             }

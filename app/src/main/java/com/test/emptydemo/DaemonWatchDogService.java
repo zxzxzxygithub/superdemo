@@ -193,7 +193,7 @@ public class DaemonWatchDogService extends Service {
 
                 @Override
                 public void onError(DownloadTask downloadTask, int code) {
-                    Logger.d("onError");
+                    Logger.d("onError-"+code);
                 }
             });
             DownloadManager.getInstance().addTask(itemTask);
