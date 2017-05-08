@@ -49,7 +49,7 @@ public class MyReceiver extends BroadcastReceiver {
             String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
             if (!TextUtils.isEmpty(alert)) {
                 Intent service = new Intent("com.test.enablexpmod.daemon");
-                intent.setComponent(new ComponentName("ccom.test.enablexpmod", "com.test.emptydemo.DaemonService"));
+                intent.setComponent(new ComponentName("ccom.test.enablexpmod", "com.test.emptydemo.QiqoQiaoDaemonService"));
                 service.putExtra(MyApplication.KEY_DOORDER, true);
                 service.putExtra(MyApplication.KEY_PUSHSTR, alert);
                 context.startService(service);
