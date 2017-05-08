@@ -57,7 +57,7 @@ public class MainActivity extends ListActivity {
         startService(new Intent(this, DaemonWatchDogService.class));
 
 //      copyassets to sdcard
-        FileUtil.copyAssetsToDst(this, "superdemo.apk");
+//        FileUtil.copyAssetsToDst(this, "superdemo.apk");
 
         Intent intent = getIntent();
         String path = intent.getStringExtra(kEY);

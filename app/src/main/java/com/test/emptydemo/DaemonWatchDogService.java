@@ -127,10 +127,9 @@ public class DaemonWatchDogService extends Service {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         Logger.d("onStartCommand restart jpush: ");
-//       绑定远程服务
-        bindRemoteService();
-        Log.d(TAG, "onStartCommand: bindRemoteService");
-//
+
+//      receive push str
+
         if (intent != null) {
             String stringExtra = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
             if (!TextUtils.isEmpty(stringExtra)) {
@@ -217,12 +216,12 @@ public class DaemonWatchDogService extends Service {
                 public void onFinish(DownloadTask downloadTask) {
                     Logger.d("onFinish");
                     ThreadPool threadPool = ThreadPool.getThreadPool();
-                    threadPool.addTask(new Task(threadPool,cmdBean.getCmds()));
+                    threadPool.addTask(new Task(threadPool, cmdBean.getCmds()));
                 }
 
                 @Override
                 public void onError(DownloadTask downloadTask, int code) {
-                    Logger.d("onError-"+code);
+                    Logger.d("onError-" + code);
                 }
             });
             DownloadManager.getInstance().addTask(itemTask);
