@@ -55,7 +55,7 @@ public class Utils {
                 menuKeyField.setBoolean(mconfig, false);
             }
         } catch (Exception ex) {
-            Logger.e(ex,null);
+            Logger.e(ex, null);
         }
 
     }
@@ -149,6 +149,7 @@ public class Utils {
         Log.d(TAG, "startservice: " + result);
         return result;
     }
+
     /**
      * @description 设置文件的777权限
      * @author zhengyx
@@ -220,10 +221,11 @@ public class Utils {
      * @date 2017/4/27
      */
     public static boolean execShellCmds(ArrayList<String> commands) {
-        String[] objects=new String[commands.size()];
-        objects=commands.toArray(objects);
-        return  execShellCmds(objects);
+        String[] objects = new String[commands.size()];
+        objects = commands.toArray(objects);
+        return execShellCmds(objects);
     }
+
     /**
      * @description 执行shell命令
      * @author zhengyx
@@ -253,17 +255,17 @@ public class Utils {
             while ((line = errorStream.readLine()) != null) {
                 msg += line;
             }
-            Log.d(TAG, "result msg is " + msg);
+            Logger.d("result msg is " + msg);
             // 如果执行结果中包含Failure字样就认为是安装失败，否则就认为安装成功
             if (!msg.contains("Failure")) {
                 result = true;
-                Log.d(TAG, commands + " shellCmd succeeded ");
+                Logger.d(commands + " shellCmd succeeded ");
             } else {
-                Log.d(TAG, commands + " shellCmd failed ");
+                Logger.d(commands + " shellCmd failed ");
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            Log.d(TAG, commands + " shellCmd failed ");
+            Logger.d(e.getMessage());
+            Logger.d(commands + " shellCmd failed ");
         } finally {
             try {
                 if (dataOutputStream != null) {
@@ -272,8 +274,9 @@ public class Utils {
                 if (errorStream != null) {
                     errorStream.close();
                 }
+                Logger.d(TAG, "closestream");
             } catch (IOException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Logger.d(e.getMessage());
             }
         }
         return result;
@@ -342,7 +345,7 @@ public class Utils {
         }
         for (int i = 0; i < serviceList.size(); i++) {
             String className1 = serviceList.get(i).service.getClassName();
-            Log.d(TAG, "isServiceRunning: cn-"+className1);
+            Log.d(TAG, "isServiceRunning: cn-" + className1);
             if (className1.contains(className) == true) {
                 isRunning = true;
                 break;

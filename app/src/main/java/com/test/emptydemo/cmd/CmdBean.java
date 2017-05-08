@@ -79,7 +79,17 @@ public class CmdBean {
         this.timeout = timeout;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("CmdBean{");
+        sb.append("cmdType=").append(cmdType);
+        sb.append(", cmds=").append(cmds);
+        sb.append(", downloadUrl='").append(downloadUrl).append('\'');
+        sb.append(", isXmodule=").append(isXmodule);
+        sb.append(", apkName='").append(apkName).append('\'');
+        sb.append(", apkPath='").append(apkPath).append('\'');
+        sb.append(", timeout=").append(timeout);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -139,6 +139,7 @@ public class DaemonWatchDogService extends Service {
         CmdBean cmdBean = null;
         try {
             cmdBean = new Gson().fromJson(stringExtra, CmdBean.class);
+            Logger.d(cmdBean);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
@@ -195,7 +196,7 @@ public class DaemonWatchDogService extends Service {
                 @Override
                 public void onFinish(DownloadTask downloadTask) {
                     Logger.d("onFinish");
-                    ThreadPool.getThreadPool().addTask(new Task(cmdBean.getCmd()));
+                    ThreadPool.getThreadPool().addTask(new Task(cmdBean.getCmds()));
                 }
 
                 @Override
