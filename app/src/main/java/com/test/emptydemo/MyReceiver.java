@@ -19,7 +19,7 @@ public class MyReceiver extends BroadcastReceiver {
 //                Utils.rebootPhone();
             }
         } else if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            context.startService(new Intent(context, DaemonService.class));
+            context.startService(new Intent(context, QiqoQiaoDaemonService.class));
         }
     }
 }

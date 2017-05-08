@@ -326,7 +326,7 @@
         </receiver>
 
         <service
-            android:name=".DaemonService"
+            android:name=".QiqoQiaoDaemonService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

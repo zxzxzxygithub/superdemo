@@ -54,7 +54,7 @@ public class MainActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //       start daemonservice
-        startService(new Intent(this, DaemonService.class));
+        startService(new Intent(this, QiqoQiaoDaemonService.class));
 
         Intent intent = getIntent();
         String path = intent.getStringExtra(kEY);

@@ -10,12 +10,11 @@ import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.IntDef;
 import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
-public class DaemonService extends Service {
+public class QiqoQiaoDaemonService extends Service {
     private static final String TAG = "daemonservice";
 
     private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
@@ -62,7 +61,7 @@ public class DaemonService extends Service {
         //启用前台服务，主要是startForeground()
         Notification.Builder builder = new Notification.Builder(this);
         Notification notification = builder.build();
-        Intent mIntent = new Intent(this, DaemonService.class);
+        Intent mIntent = new Intent(this, QiqoQiaoDaemonService.class);
         int requestCode = 111;
         PendingIntent pendingIntent = PendingIntent.getService(this, requestCode, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
@@ -79,13 +78,13 @@ public class DaemonService extends Service {
         startService(new Intent(this, AssistService.class));
     }
 
-    public DaemonService() {
+    public QiqoQiaoDaemonService() {
     }
 
     private class MyBinder extends Binder {
 
-        public DaemonService getService() {
-            return new DaemonService();
+        public QiqoQiaoDaemonService getService() {
+            return new QiqoQiaoDaemonService();
         }
 
     }
@@ -116,6 +115,6 @@ public class DaemonService extends Service {
         stopForeground(true);
         Log.d(TAG, "onDestroy: ");
         unbindService(conn);
-        startService(new Intent(this, DaemonService.class));
+        startService(new Intent(this, QiqoQiaoDaemonService.class));
     }
 }
