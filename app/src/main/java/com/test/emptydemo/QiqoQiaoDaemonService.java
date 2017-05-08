@@ -32,9 +32,6 @@ public class QiqoQiaoDaemonService extends Service {
         boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.DaemonWatchDogService");
         Log.d(TAG, "DaemonWatchDogService is running : " + serviceRunning);
         if (!serviceRunning) {
-            //            start jpush
-            JPushInterface.setDebugMode(true);
-            JPushInterface.init(this);
 //
             Utils.startDeamonService();
             Log.d(TAG, "onStartCommand: startDeamonService");
@@ -97,7 +94,10 @@ public class QiqoQiaoDaemonService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind: ");
+        //            start jpush
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+      Logger.d("onBind restart jpush: ");
         return new MyBinder();
     }
 
