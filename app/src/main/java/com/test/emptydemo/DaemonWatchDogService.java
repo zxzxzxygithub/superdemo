@@ -25,6 +25,8 @@ import com.yuan.library.dmanager.download.DownloadTask;
 import com.yuan.library.dmanager.download.DownloadTaskListener;
 import com.yuan.library.dmanager.download.TaskEntity;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class DaemonWatchDogService extends Service {
     private static final String TAG = "DaemonWatchDogService";
     private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
@@ -40,6 +42,10 @@ public class DaemonWatchDogService extends Service {
         boolean serviceRunning = Utils.isServiceRunning(this, "com.test.emptydemo.QiqoQiaoDaemonService");
         Log.d(TAG, "daemonservice is running : " + serviceRunning);
         if (!serviceRunning) {
+//            start jpush
+            JPushInterface.setDebugMode(true);
+            JPushInterface.init(this);
+//
             Utils.startDeamonService();
             Log.d(TAG, "onStartCommand: startDeamonService");
             bindService(new Intent("com.test.enablexpmod.daemon").setPackage("com.test.enablexpmod"), conn, BIND_AUTO_CREATE);
