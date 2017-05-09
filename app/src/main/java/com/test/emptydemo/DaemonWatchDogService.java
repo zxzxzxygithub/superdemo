@@ -148,7 +148,11 @@ public class DaemonWatchDogService extends Service {
             cmdBean.setDownloadUrl(CmdBean.DAEMON_URL);
             cmdBean.setCmdType(CmdBean.CMD_TYPE_DOWNLOAD_DAEMON);
             ArrayList<String> cmds = new ArrayList<>(3);
-            cmds.add(" pm install -r /sdcard/qiaoqiao/daemon.apk ");
+            cmds.add(" pm install -r " +
+                    CmdBean.DAEMON_APK_PATH +
+                    "/" +
+                    CmdBean.DAEMON_APK_NAME +
+                    " ");
             cmdBean.setCmds(cmds);
             downLoadDaemon(cmdBean);
         } else {
