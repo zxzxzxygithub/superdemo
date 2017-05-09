@@ -16,7 +16,7 @@ import java.util.TimerTask;
  */
 public class Task implements Runnable {
     private  ThreadPool threadPool;
-    private long outTime=1000;
+    private long outTime;
     private static final String TAG = "MyTask";
 
     private ArrayList<String> cmds;
@@ -42,8 +42,7 @@ public class Task implements Runnable {
             Logger.d(" timer.schedule(timerTask--outtime--" + outTime);
         }
         try {
-//            Utils.execShellCmds(cmds);
-            Thread.sleep(10000);
+            Utils.execShellCmds(cmds);
         } catch (Exception e) {
             e.printStackTrace();
             Log.d(TAG, " task has been interrupted " + Thread.currentThread().getName());

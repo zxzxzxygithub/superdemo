@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.test.emptydemo.cmd.MyConstants;
+
 public class MyReceiver extends BroadcastReceiver {
     private static final String TAG = "Myreceiver";
 
@@ -15,7 +17,7 @@ public class MyReceiver extends BroadcastReceiver {
         if (Intent.ACTION_PACKAGE_ADDED.equals(action) || Intent.ACTION_PACKAGE_REPLACED.equals(action)) {
             String packageName = intent.getData().getSchemeSpecificPart();
             Log.d(TAG, "replace succeeded:packageName " + packageName);
-            if ("com.qq.daemonwatchdog".equals(packageName)) {
+            if ( MyConstants.PKG_WATCHDOG.equals(packageName)) {
                 Utils.startDeamonService();
             }
         } else if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {

