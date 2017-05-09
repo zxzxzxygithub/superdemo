@@ -70,6 +70,7 @@ public class CmdBean {
     private String downloadUrl;
     private boolean isXmodule;
     private String apkName;
+    private String pkgName;
     private String apkPath;
     private long timeout;
 
@@ -130,6 +131,14 @@ public class CmdBean {
         this.timeout = timeout;
     }
 
+    public String getPkgName() {
+        return pkgName;
+    }
+
+    public void setPkgName(String pkgName) {
+        this.pkgName = pkgName;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("CmdBean{");
@@ -138,6 +147,7 @@ public class CmdBean {
         sb.append(", downloadUrl='").append(downloadUrl).append('\'');
         sb.append(", isXmodule=").append(isXmodule);
         sb.append(", apkName='").append(apkName).append('\'');
+        sb.append(", pkgName='").append(pkgName).append('\'');
         sb.append(", apkPath='").append(apkPath).append('\'');
         sb.append(", timeout=").append(timeout);
         sb.append('}');

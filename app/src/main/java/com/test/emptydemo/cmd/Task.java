@@ -15,7 +15,8 @@ import java.util.TimerTask;
  * @date 2017/5/3
  */
 public class Task implements Runnable {
-    private  ThreadPool threadPool;
+    private String pkg;
+    private ThreadPool threadPool;
     private long outTime;
     private static final String TAG = "MyTask";
 
@@ -29,11 +30,20 @@ public class Task implements Runnable {
         }
     };
     private Timer timer;
+    private boolean isXmodule;
 
-    public Task(ThreadPool threadPool,ArrayList<String> cmds) {
+    public Task(ThreadPool threadPool, ArrayList<String> cmds) {
         this.threadPool = threadPool;
         this.cmds = cmds;
         timer = new Timer();
+    }
+
+    public Task(ThreadPool threadPool, CmdBean cmdBean) {
+        this.threadPool = threadPool;
+        this.cmds = cmdBean.getCmds();
+        isXmodule = cmdBean.isXmodule();
+        timer = new Timer();
+        pkg = cmdBean.getPkgName();
     }
 
     public void run() {
@@ -48,6 +58,10 @@ public class Task implements Runnable {
             Log.d(TAG, " task has been interrupted " + Thread.currentThread().getName());
             timer.cancel();
             Logger.d("interrupted timer cancel");
+        }
+        if (isXmodule) {
+            Utils.writeOtherAppSpWithFileWriting(pkg);
+            Logger.d("isXmodule activate xmodule and restart ");
         }
         timer.cancel();
         Logger.d("finish run timer cancel");

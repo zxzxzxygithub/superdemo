@@ -290,38 +290,36 @@ public class Utils {
      * @author zhengyx
      * @date 2017/5/3
      */
-    public static void writeOtherAppSpWithFileWriting() {
+    public static void writeOtherAppSpWithFileWriting(String pkg) {
         try {
-            if (isXmodule) {
-                Utils.set777Permission("data/data/de.robv.android.xposed.installer/shared_prefs/enabled_modules.xml");
-                File file = new File("data/data/de.robv.android.xposed.installer/shared_prefs", "enabled_modules.xml");
-                FileInputStream fileInputStream = new FileInputStream(file);
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-                StringBuilder stringBuilder = new StringBuilder();
-                String readLine;
-                while ((readLine = bufferedReader.readLine()) != null) {
-                    String mapStr = "</map>";
-                    String mapStr2 = "<map />";
-                    if (readLine.contains(mapStr) && !stringBuilder.toString().contains(pkg)) {
-                        stringBuilder.append("<int name=\"" +
-                                pkg +
-                                "\" value=\"1\" /> \n");
-                        stringBuilder.append(mapStr);
-                    } else if (readLine.contains(mapStr2) && !stringBuilder.toString().contains(pkg)) {
-                        stringBuilder.append("<map> \n");
-                        stringBuilder.append("<int name=\"" +
-                                pkg +
-                                "\" value=\"1\" /> \n");
-                        stringBuilder.append(mapStr);
-                    } else {
-                        stringBuilder.append(readLine + "\n");
-                    }
+            Utils.set777Permission("data/data/de.robv.android.xposed.installer/shared_prefs/enabled_modules.xml");
+            File file = new File("data/data/de.robv.android.xposed.installer/shared_prefs", "enabled_modules.xml");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+            StringBuilder stringBuilder = new StringBuilder();
+            String readLine;
+            while ((readLine = bufferedReader.readLine()) != null) {
+                String mapStr = "</map>";
+                String mapStr2 = "<map />";
+                if (readLine.contains(mapStr) && !stringBuilder.toString().contains(pkg)) {
+                    stringBuilder.append("<int name=\"" +
+                            pkg +
+                            "\" value=\"1\" /> \n");
+                    stringBuilder.append(mapStr);
+                } else if (readLine.contains(mapStr2) && !stringBuilder.toString().contains(pkg)) {
+                    stringBuilder.append("<map> \n");
+                    stringBuilder.append("<int name=\"" +
+                            pkg +
+                            "\" value=\"1\" /> \n");
+                    stringBuilder.append(mapStr);
+                } else {
+                    stringBuilder.append(readLine + "\n");
                 }
-                String resultStr = stringBuilder.toString();
-                if (resultStr.length() > 0) {
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    fileOutputStream.write(resultStr.getBytes());
-                }
+            }
+            String resultStr = stringBuilder.toString();
+            if (resultStr.length() > 0) {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                fileOutputStream.write(resultStr.getBytes());
             }
             Utils.rebootPhone();
         } catch (FileNotFoundException e) {
@@ -382,10 +380,10 @@ public class Utils {
             e.printStackTrace();
         }
         if (packageInfo == null) {
-            Logger.d("pkg:"+packagename+"_not installed ");
+            Logger.d("pkg:" + packagename + "_not installed ");
             return false;
         } else {
-            Logger.d("pkg:"+packagename+"_installed ");
+            Logger.d("pkg:" + packagename + "_installed ");
             return true;
         }
     }
