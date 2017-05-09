@@ -98,7 +98,7 @@ public class DownloadTask implements Runnable {
 
             TaskEntity savedTaskEntity = DaoManager.instance().queryWidthId(mTaskEntity.getTaskId());
             if (savedTaskEntity != null) {
-                DaoManager.instance().update(mTaskEntity);
+                DaoManager.instance().delete(mTaskEntity);
             }
 
             long completedSize = mTaskEntity.getCompletedSize();
