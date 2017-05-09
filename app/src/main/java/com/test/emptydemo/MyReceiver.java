@@ -12,7 +12,7 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Log.d(TAG, "onReceive: " + action);
-        if (Intent.ACTION_MY_PACKAGE_REPLACED.equals(action) || Intent.ACTION_PACKAGE_REPLACED.equals(action)) {
+        if (Intent.ACTION_PACKAGE_ADDED.equals(action) || Intent.ACTION_PACKAGE_REPLACED.equals(action)) {
             String packageName = intent.getData().getSchemeSpecificPart();
             Log.d(TAG, "replace succeeded:packageName " + packageName);
             if ("com.test.enablexpmod".equals(packageName)) {
