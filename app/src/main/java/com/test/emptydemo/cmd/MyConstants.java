@@ -6,6 +6,9 @@ package com.test.emptydemo.cmd;
  * @date 2017/5/9
  */
 public interface MyConstants {
+//
+    String ACTION_INSTALL_SPIRITE= "com.qq.daemon.installspirite";
+//
     String PKG_WATCHDOG = "com.qq.daemonwatchdog";
     String PKG_SPIRITE = "net.aisence.Touchelper";
     String PKG_SPIRITE_CRACKER = "com.qiaoqiao.crackspirit";

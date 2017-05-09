@@ -1,6 +1,7 @@
 package com.test.emptydemo;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.yuan.library.dmanager.download.DownloadManager;
 
@@ -18,10 +19,11 @@ public class MyApplication extends Application {
     public static final String KEY_LOCKSCREEN = "lockscreen";
     public static final String ACTION_FINISH = "com.zhengyx.action.finish";
     public static final String KEY_DOORDER = "key_order";
-
+    public static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        context=this;
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         DownloadManager.getInstance().init(this, 9);

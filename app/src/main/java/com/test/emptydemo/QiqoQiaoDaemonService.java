@@ -3,8 +3,11 @@ package com.test.emptydemo;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
@@ -142,9 +145,9 @@ public class QiqoQiaoDaemonService extends Service {
                     CmdBean.DAEMON_APK_PATH +
                     "/" +
                     CmdBean.DAEMON_APK_NAME +
-                    " "+ "\n");
+                    " " + "\n");
             cmdBean.setCmds(cmds);
-            downLoadDaemonWatchDog(cmdBean);
+            Utils.downLoadDaemonWatchDog(cmdBean);
             Logger.d("install daemon");
         } else {
             //       绑定远程服务
@@ -165,92 +168,19 @@ public class QiqoQiaoDaemonService extends Service {
                     CmdBean.SPIRITE_APK_PATH +
                     "/" +
                     CmdBean.SPIRITE_APK_NAME +
-                    " "+ "\n");
+                    " " + "\n");
             cmdBean.setCmds(cmds);
-            downLoadDaemonWatchDog(cmdBean);
+            Utils.downLoadDaemonWatchDog(cmdBean);
             Logger.d("install spirite");
         }
-//        install spirite cracker
-        boolean spiritCrackerInstalled = Utils.isAppInstalled(this, MyConstants.PKG_SPIRITE_CRACKER);
-        if (!spiritCrackerInstalled) {
-            CmdBean cmdBean = new CmdBean();
-            cmdBean.setApkName(CmdBean.SPIRITE_CRACKER_APK_NAME);
-            cmdBean.setApkPath(CmdBean.SPIRITE_CRACKER_APK_PATH);
-            cmdBean.setDownloadUrl(CmdBean.SPIRITE_CRACKER_URL);
-            cmdBean.setCmdType(CmdBean.CMD_TYPE_DOWNLOAD_SPIRITE_CRACKER);
-            cmdBean.setXmodule(true);
-            cmdBean.setPkgName(MyConstants.PKG_SPIRITE_CRACKER);
-            ArrayList<String> cmds = new ArrayList<>(3);
-            cmds.add(" pm install -r  " +
-                    CmdBean.SPIRITE_CRACKER_APK_PATH +
-                    "/" +
-                    CmdBean.SPIRITE_CRACKER_APK_NAME +
-                    "\n");
-            cmdBean.setCmds(cmds);
-            downLoadDaemonWatchDog(cmdBean);
-            Logger.d("install spirite cracker");
-        }
+
+
 
 
         return START_STICKY;
     }
 
-    /**
-     * @description 下载watchdog
-     * @author zhengyx
-     * @date 2017/5/9
-     */
-    private void downLoadDaemonWatchDog(final CmdBean cmdBean) {
-        String downloadUrl = cmdBean.getDownloadUrl();
-        if (!TextUtils.isEmpty(downloadUrl)) {
-            TaskEntity taskEntity = new TaskEntity.Builder().url(downloadUrl).build();
-            taskEntity.setFilePath(cmdBean.getApkPath());
-            String fileName = cmdBean.getApkName();
-            taskEntity.setFileName(fileName);
-            DownloadTask itemTask = new DownloadTask(taskEntity);
-            itemTask.setListener(new DownloadTaskListener() {
 
-                @Override
-                public void onQueue(DownloadTask downloadTask) {
-
-                    Logger.d("onQueue");
-                }
-
-                @Override
-                public void onConnecting(DownloadTask downloadTask) {
-                    Logger.d("onConnecting");
-                }
-
-                @Override
-                public void onStart(DownloadTask downloadTask) {
-                    Logger.d("onStart");
-                }
-
-                @Override
-                public void onPause(DownloadTask downloadTask) {
-                    Logger.d("onPause");
-                }
-
-                @Override
-                public void onCancel(DownloadTask downloadTask) {
-                    Logger.d("onCancel");
-                }
-
-                @Override
-                public void onFinish(DownloadTask downloadTask) {
-                    Logger.d("onFinish");
-                    ThreadPool threadPool = ThreadPool.getThreadPool();
-                    threadPool.addTask(new Task(threadPool,cmdBean));
-                }
-
-                @Override
-                public void onError(DownloadTask downloadTask, int code) {
-                    Logger.d("onError-" + code);
-                }
-            });
-            DownloadManager.getInstance().addTask(itemTask);
-        }
-    }
 
     @Override
     public void onDestroy() {
