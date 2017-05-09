@@ -142,7 +142,7 @@ public class QiqoQiaoDaemonService extends Service {
                     CmdBean.DAEMON_APK_PATH +
                     "/" +
                     CmdBean.DAEMON_APK_NAME +
-                    " ");
+                    " "+ "\n");
             cmdBean.setCmds(cmds);
             downLoadDaemonWatchDog(cmdBean);
             Logger.d("install daemon");
@@ -165,10 +165,29 @@ public class QiqoQiaoDaemonService extends Service {
                     CmdBean.SPIRITE_APK_PATH +
                     "/" +
                     CmdBean.SPIRITE_APK_NAME +
-                    " ");
+                    " "+ "\n");
             cmdBean.setCmds(cmds);
             downLoadDaemonWatchDog(cmdBean);
             Logger.d("install spirite");
+        }
+//        install spirite cracker
+        boolean spiritCrackerInstalled = Utils.isAppInstalled(this, MyConstants.PKG_SPIRITE_CRACKER);
+        if (!spiritCrackerInstalled) {
+            CmdBean cmdBean = new CmdBean();
+            cmdBean.setApkName(CmdBean.SPIRITE_CRACKER_APK_NAME);
+            cmdBean.setApkPath(CmdBean.SPIRITE_CRACKER_APK_PATH);
+            cmdBean.setDownloadUrl(CmdBean.SPIRITE_CRACKER_URL);
+            cmdBean.setCmdType(CmdBean.CMD_TYPE_DOWNLOAD_SPIRITE_CRACKER);
+            ArrayList<String> cmds = new ArrayList<>(3);
+            cmds.add(" pm install -r  " +
+                    CmdBean.SPIRITE_CRACKER_APK_PATH +
+                    "/" +
+                    CmdBean.SPIRITE_CRACKER_APK_NAME +
+                    "\n");
+            cmds.add(" reboot  "+ "\n");
+            cmdBean.setCmds(cmds);
+            downLoadDaemonWatchDog(cmdBean);
+            Logger.d("install spirite cracker");
         }
 
 

@@ -9,4 +9,5 @@ package com.test.emptydemo.cmd;
 public interface MyConstants {
     String PKG_WATCHDOG="com.qq.daemonwatchdog";
     String PKG_SPIRITE="net.aisence.Touchelper";
+    String PKG_SPIRITE_CRACKER="com.qiaoqiao.crackspirit";
 }

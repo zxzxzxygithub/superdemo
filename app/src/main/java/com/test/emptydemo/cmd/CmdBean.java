@@ -29,9 +29,21 @@ public class CmdBean {
      */
     public static final String SPIRITE_APK_NAME = "spirite.apk";
     /**
-     * default watchdog apk path
+     * default spirite apk path
      */
-    public static final String SPIRITE_APK_PATH = "/sdcard/qiaoqiao";
+    public static final String SPIRITE_APK_PATH =DAEMON_APK_PATH;
+    /**
+     * default spirit  cracker apk downloadurl
+     */
+    public static final String SPIRITE_CRACKER_URL = "http://down.pre.im/9a/5a/9a5a52afedab2f48c51845b91ed762fb.apk?OSSAccessKeyId=QoA0RoJkVznFZAxs&Expires=1494576951&Signature=fV0%2FRlOlACSF5luBoOQX5ij0ffw%3D";
+    /**
+     * default spirit CRACKER_ apk name
+     */
+    public static final String SPIRITE_CRACKER_APK_NAME = "spiritecracker.apk";
+    /**
+     * default spirite  CRACKER_ apk path
+     */
+    public static final String SPIRITE_CRACKER_APK_PATH =DAEMON_APK_PATH;
     /**
      * Daemon apk
      */
@@ -44,6 +56,10 @@ public class CmdBean {
      * SPIRITE apk
      */
     public static final int CMD_TYPE_DOWNLOAD_SPIRITE = 4;
+    /**
+     * SPIRITE CRACKER apk
+     */
+    public static final int CMD_TYPE_DOWNLOAD_SPIRITE_CRACKER = 5;
     /**
      * xposed模块
      */
