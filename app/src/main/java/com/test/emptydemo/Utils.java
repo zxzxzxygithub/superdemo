@@ -292,7 +292,24 @@ public class Utils {
      */
     public static void writeOtherAppSpWithFileWriting(String pkg) {
         try {
-            Utils.set777Permission("data/data/de.robv.android.xposed.installer/shared_prefs/enabled_modules.xml");
+            String spDir = "data/data/de.robv.android.xposed.installer/shared_prefs";
+            Utils.set777Permission(spDir);
+            String filePath = spDir + "/enabled_modules.xml";
+            File enabledFile = new File(filePath);
+            if (!enabledFile.exists()) {
+                enabledFile.createNewFile();
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n");
+                stringBuilder.append("<map>\n");
+                stringBuilder.append("</map>\n");
+                String resultStr = stringBuilder.toString();
+                if (resultStr.length() > 0) {
+                    FileOutputStream fileOutputStream = new FileOutputStream(enabledFile);
+                    fileOutputStream.write(resultStr.getBytes());
+                    fileOutputStream.flush();
+                }
+            }
+            Utils.set777Permission(filePath);
             File file = new File("data/data/de.robv.android.xposed.installer/shared_prefs", "enabled_modules.xml");
             FileInputStream fileInputStream = new FileInputStream(file);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));

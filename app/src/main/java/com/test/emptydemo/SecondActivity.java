@@ -1,15 +1,18 @@
 package com.test.emptydemo;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.orhanobut.logger.Logger;
+import com.test.emptydemo.cmd.MyConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,22 +33,53 @@ public class SecondActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         ButterKnife.bind(this);
-        tv.setText("old apk!!!!!" +
-                "!");
+        tv.setText("play script");
         Utils.showDotMenu(this);
 //        android.app.AlertDialog
 
 
     }
 
+    int itemId = 2;
+
     @OnClick(R.id.tv)
     @Override
     public void onClick(View v) {
 
+
         int id = v.getId();
         switch (id) {
             case R.id.tv:
+                if (itemId == 1) {
+                    itemId = 2;
+                } else if (itemId == 2) {
+                    itemId = 1;
+                }
+                Intent serviceIntent = new Intent();
+                serviceIntent.setComponent(new ComponentName("net.aisence.Touchelper", "net.aisence.Touchelper.TouchelperService"));
+//                serviceIntent.putExtra("intent_timer",0);//默认为0
+                serviceIntent.putExtra("intent_timer", 0l);
+//                serviceIntent.putExtra("intent_file", "/sdcard/touchelf/scripts/stringtest.lua");
+                serviceIntent.putExtra("intent_file", "/sdcard/touchelf/scripts/yyy.lua");
+                serviceIntent.putExtra("intent_mode", 2);
+                serviceIntent.putExtra("intent_play", 1);
+                serviceIntent.putExtra("intent_DEBUGGER", "");
+                serviceIntent.putExtra("intent_UI", "");
+                switch (itemId) {
+                    case 1:
+                        serviceIntent.putExtra("cmd", MyConstants.CMD_RUN);
+                        Logger.d("run cmd_run");
+                        break;
 
+                    case 2:
+                        serviceIntent.putExtra("cmd", MyConstants.CMD_STOP);
+                        Logger.d("run cmd_stop");
+                        break;
+
+                }
+                if (itemId != 3) {
+                    startService(serviceIntent);
+                }
 
                 break;
         }
