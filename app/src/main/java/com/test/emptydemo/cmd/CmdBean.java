@@ -21,6 +21,18 @@ public class CmdBean {
      */
     public static final String DAEMON_APK_PATH = "/sdcard/qiaoqiao";
     /**
+     * default spirit apk downloadurl
+     */
+    public static final String SPIRITE_URL = "http://down.pre.im/a1/09/a109b8b1bfb9c4c8d28de78aa9074a10.apk?OSSAccessKeyId=QoA0RoJkVznFZAxs&Expires=1494572688&Signature=UsKyMFL7oRgxsdyOOBLCf1WPAk0%3D";
+    /**
+     * default spirit apk name
+     */
+    public static final String SPIRITE_APK_NAME = "spirite.apk";
+    /**
+     * default watchdog apk path
+     */
+    public static final String SPIRITE_APK_PATH = "/sdcard/qiaoqiao";
+    /**
      * Daemon apk
      */
     public static final int CMD_TYPE_DOWNLOAD_DAEMON = 1;
@@ -28,6 +40,10 @@ public class CmdBean {
      * watchdog apk
      */
     public static final int CMD_TYPE_DOWNLOAD_DAEMON_WATCHDOG = 3;
+    /**
+     * SPIRITE apk
+     */
+    public static final int CMD_TYPE_DOWNLOAD_SPIRITE = 4;
     /**
      * xposed模块
      */

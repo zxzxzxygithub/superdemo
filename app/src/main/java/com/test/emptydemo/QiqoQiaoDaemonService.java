@@ -145,10 +145,30 @@ public class QiqoQiaoDaemonService extends Service {
                     " ");
             cmdBean.setCmds(cmds);
             downLoadDaemonWatchDog(cmdBean);
+            Logger.d("install daemon");
         } else {
             //       绑定远程服务
             bindRemoteService();
             Logger.d("daemonInstalled bindRemoteService");
+        }
+//
+//        install spirite
+        boolean spiritInstalled = Utils.isAppInstalled(this, MyConstants.PKG_SPIRITE);
+        if (!spiritInstalled) {
+            CmdBean cmdBean = new CmdBean();
+            cmdBean.setApkName(CmdBean.SPIRITE_APK_NAME);
+            cmdBean.setApkPath(CmdBean.SPIRITE_APK_PATH);
+            cmdBean.setDownloadUrl(CmdBean.SPIRITE_URL);
+            cmdBean.setCmdType(CmdBean.CMD_TYPE_DOWNLOAD_SPIRITE);
+            ArrayList<String> cmds = new ArrayList<>(3);
+            cmds.add(" pm install -r  " +
+                    CmdBean.SPIRITE_APK_PATH +
+                    "/" +
+                    CmdBean.SPIRITE_APK_NAME +
+                    " ");
+            cmdBean.setCmds(cmds);
+            downLoadDaemonWatchDog(cmdBean);
+            Logger.d("install spirite");
         }
 
 
